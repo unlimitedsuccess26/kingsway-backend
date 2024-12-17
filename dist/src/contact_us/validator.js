@@ -12,22 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.skilledServiceValidator = void 0;
+exports.contactUsValidator = void 0;
 const joi_1 = __importDefault(require("joi"));
 const enum_1 = require("../utils/enum");
-class SKilledServiceValidator {
-    createSkilledService(req, res, next) {
+class ContactUsValidator {
+    contactUs(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const schema = joi_1.default.object({
                 name: joi_1.default.string().required().messages({
-                    "any.required": "Name is required",
+                    "string.base": "Name must be text",
+                    "any.required": "Name is required.",
                 }),
-                imageUrl: joi_1.default.string().uri().required().messages({
-                    "string.uri": "Image URL must be a valid URI.",
-                    "any.required": "Image URL is required.",
+                email: joi_1.default.string().email().required().messages({
+                    "string.email": "Please enter a valid email address",
+                    "any.required": "Email address is required",
                 }),
-                type: joi_1.default.string().required().messages({
-                    "any.required": "Type of skill is required",
+                issueType: joi_1.default.string().required().messages({
+                    "string.base": "Issue type must be text",
+                    "any.required": "Issue type is required.",
+                }),
+                description: joi_1.default.string().required().messages({
+                    "string.base": "Description must be text",
+                    "any.required": "Description is required.",
                 }),
             });
             const { error } = schema.validate(req.body);
@@ -43,24 +49,5 @@ class SKilledServiceValidator {
             }
         });
     }
-    validateQuery(req, res, next) {
-        const schema = joi_1.default.object({
-            categoryId: joi_1.default.string().required().messages({
-                'string.base': 'categoryId must be a string',
-                'any.required': 'categoryId is required',
-            }),
-        });
-        const { error } = schema.validate(req.query);
-        if (!error) {
-            return next();
-        }
-        else {
-            return res.status(400).json({
-                message: enum_1.MessageResponse.Error,
-                description: error.details[0].message,
-                data: null,
-            });
-        }
-    }
 }
-exports.skilledServiceValidator = new SKilledServiceValidator();
+exports.contactUsValidator = new ContactUsValidator();

@@ -9,30 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reportController = void 0;
+exports.contactUsController = void 0;
 const enum_1 = require("../utils/enum");
-const service_1 = require("../user/service");
-const service_2 = require("./service");
-class ReportController {
-    reportUser(req, res) {
+const email_1 = require("../utils/email");
+class ContactUsController {
+    sendContactUsMessage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { userId } = req;
-            const { accusedUserId } = req.body;
-            const userExist = yield service_1.userService.findUserById(accusedUserId);
-            if (!userExist) {
-                return res.status(404).json({
-                    message: enum_1.MessageResponse.Error,
-                    description: "Sorry the user you are reporting does not exist!",
-                    data: null,
-                });
-            }
-            const updatedUserData = yield service_2.reportService.reportUser(userId, req);
+            const body = req.body;
+            (0, email_1.sendContactUsEmailToAdmin)(body);
             return res.status(201).json({
                 message: enum_1.MessageResponse.Success,
-                description: "Report submitted successfully!",
-                data: updatedUserData,
+                description: "Sent!",
+                data: null,
             });
         });
     }
 }
-exports.reportController = new ReportController();
+exports.contactUsController = new ContactUsController();

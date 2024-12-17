@@ -5,21 +5,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
-const reportSchema = new Schema({
-    accusedUserDetails: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        required: true,
-        ref: "User",
-    },
-    reporterUserDetails: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        required: true,
-        ref: "User",
-    },
-    content: {
+const itemSchema = new Schema({
+    name: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    issueType: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    createdAt: { type: Date, default: Date.now },
 });
-const Report = mongoose_1.default.model("Report", reportSchema);
-exports.default = Report;
+const Item = mongoose_1.default.model("ContactUs", itemSchema);
+exports.default = Item;
