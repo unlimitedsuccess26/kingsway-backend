@@ -1,6 +1,5 @@
 import Joi from "joi";
 import { Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
 
 import { MessageResponse } from "../utils/enum";
 

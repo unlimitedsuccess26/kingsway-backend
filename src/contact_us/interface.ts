@@ -5,6 +5,7 @@ export interface IContactUs extends Document {
   email: string;
   issueType: string;
   description: string;
+  createdAt: Date;
 }
 
 export interface IContactUsUserInput {
