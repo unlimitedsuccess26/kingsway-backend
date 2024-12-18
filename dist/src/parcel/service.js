@@ -13,11 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createParcelService = void 0;
+const utils_1 = require("../utils");
 const entity_1 = __importDefault(require("./entity"));
+const enum_1 = require("./enum");
 class CreateParcelService {
     createParcel(input) {
         return __awaiter(this, void 0, void 0, function* () {
             const { arrivalDate, email, freightDate, newLocation, parcelWeight, parcelsDesignation, receiverEmail, receiverName, senderName } = input;
+            const orderId = (0, utils_1.generateOrderId)();
+            const status = enum_1.ParcelStatus.Pending;
             const newParcel = new entity_1.default({
                 arrivalDate,
                 email,
@@ -27,7 +31,9 @@ class CreateParcelService {
                 parcelsDesignation,
                 receiverEmail,
                 receiverName,
-                senderName
+                senderName,
+                orderId,
+                status
             });
             yield newParcel.save();
             return;

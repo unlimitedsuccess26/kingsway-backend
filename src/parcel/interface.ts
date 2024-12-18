@@ -10,6 +10,8 @@ export interface IParcel extends Document {
   parcelWeight: string;
   parcelsDesignation: string;
   newLocation: string;
+  orderId: string;
+  status: string;
   createdAt: Date;
 }
 
