@@ -16,7 +16,7 @@ ParcelRouter.post(
 
 ParcelRouter.get(
   "/parcel",
-  //[isAuth],
+  [isAuth],
   wrapAsync(createParcelController.fetchParcel)
 );
 
