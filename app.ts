@@ -9,6 +9,7 @@ import Logging from "./src/utils/loggin";
 import { MessageResponse } from "./src/utils/enum";
 import { ContactUsRouter } from "./src/contact_us/router";
 import { ParcelRouter } from "./src/parcel/router";
+import { AdminRouter } from "./src/admin/router";
 
 const app: Express = express();
 
@@ -48,7 +49,8 @@ const StartServer = () => {
   app.use(
     "/api/v1",
     ContactUsRouter,
-    ParcelRouter
+    ParcelRouter,
+    AdminRouter
    
   );
 

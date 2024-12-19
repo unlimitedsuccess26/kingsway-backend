@@ -1,8 +1,6 @@
 import { Request } from "express";
 import { Types } from "mongoose";
 import Item from "./entity";
-import { slugify } from "../utils";
-
 class ItemService {
   // public async createItem(shopId: string, userId: string, req: Request) {
   //   const {

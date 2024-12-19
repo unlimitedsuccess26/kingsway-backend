@@ -11,6 +11,7 @@ const loggin_1 = __importDefault(require("./src/utils/loggin"));
 const enum_1 = require("./src/utils/enum");
 const router_1 = require("./src/contact_us/router");
 const router_2 = require("./src/parcel/router");
+const router_3 = require("./src/admin/router");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 const port = process.env.PORT || 8080;
@@ -31,7 +32,7 @@ const StartServer = () => {
         credentials: true,
     }));
     // Routes
-    app.use("/api/v1", router_1.ContactUsRouter, router_2.ParcelRouter);
+    app.use("/api/v1", router_1.ContactUsRouter, router_2.ParcelRouter, router_3.AdminRouter);
     // Health check
     app.get("/api/v1/healthcheck", (_req, res) => {
         res.status(200).json({ status: "UP 🔥🔧🎂" });

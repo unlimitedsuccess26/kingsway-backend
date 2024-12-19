@@ -8,10 +8,9 @@ export const wrapAsync = (fn: Function) => {
   };
 };
 
-export const slugify = (input: string): string => {
-  return input.toLowerCase().replace(/\s+/g, '-');
-};
-
+export const generateOtp = (): string  => {
+  return Array.from({ length: 4 }, () => crypto.randomInt(0, 10)).join('');
+}
 
 export const generateOrderId = (): string  => {
   const prefix = "KY"; 
