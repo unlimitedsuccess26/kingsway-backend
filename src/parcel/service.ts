@@ -3,7 +3,7 @@ import Parcel from "./entity";
 import { ParcelStatus } from "./enum";
 import { IParcelUserInput } from "./interface";
 
-class CreateParcelService {
+class ParcelService {
   public async createParcel(input: IParcelUserInput) {
     const {
      arrivalDate,
@@ -39,6 +39,12 @@ class CreateParcelService {
 
     return;
   }
+
+  public async fetchParcel() {
+    const parcels = await Parcel.find();
+
+    return parcels;
+  }
 }
 
-export const createParcelService = new CreateParcelService();
+export const parcelService = new ParcelService();
