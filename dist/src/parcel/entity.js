@@ -42,6 +42,14 @@ const parcelSchema = new Schema({
         type: String,
         required: true,
     },
+    orderId: {
+        type: String,
+        required: true,
+    },
+    status: {
+        type: String,
+        required: true,
+    },
     createdAt: { type: Date, default: Date.now },
 });
 const Parcel = mongoose_1.default.model("Parcel", parcelSchema);
