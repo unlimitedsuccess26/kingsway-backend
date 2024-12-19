@@ -21,7 +21,7 @@ class ParcelService {
         return __awaiter(this, void 0, void 0, function* () {
             const { arrivalDate, email, freightDate, newLocation, parcelWeight, parcelsDesignation, receiverEmail, receiverName, senderName } = input;
             const orderId = (0, utils_1.generateOrderId)();
-            console.log;
+            //console.log(orderId);
             const status = enum_1.ParcelStatus.Pending;
             const newParcel = new entity_1.default({
                 arrivalDate,

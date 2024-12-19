@@ -19,7 +19,7 @@ class ParcelService {
 
    const orderId = generateOrderId();
 
-   console.log
+   //console.log(orderId);
 
    const status = ParcelStatus.Pending;
 
