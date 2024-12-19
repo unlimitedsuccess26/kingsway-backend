@@ -16,11 +16,21 @@ class CreateParcelController {
     createParcel(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const body = req.body;
-            yield service_1.createParcelService.createParcel(body);
+            yield service_1.parcelService.createParcel(body);
             return res.status(201).json({
                 message: enum_1.MessageResponse.Success,
                 description: "Parcel created successfully!",
                 data: null,
+            });
+        });
+    }
+    fetchParcel(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const parcels = yield service_1.parcelService.fetchParcel();
+            return res.status(200).json({
+                message: enum_1.MessageResponse.Success,
+                description: "Parcel fetched successfully!",
+                data: parcels,
             });
         });
     }

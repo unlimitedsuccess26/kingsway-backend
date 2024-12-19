@@ -12,11 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createParcelService = void 0;
+exports.parcelService = void 0;
 const utils_1 = require("../utils");
 const entity_1 = __importDefault(require("./entity"));
 const enum_1 = require("./enum");
-class CreateParcelService {
+class ParcelService {
     createParcel(input) {
         return __awaiter(this, void 0, void 0, function* () {
             const { arrivalDate, email, freightDate, newLocation, parcelWeight, parcelsDesignation, receiverEmail, receiverName, senderName } = input;
@@ -39,5 +39,11 @@ class CreateParcelService {
             return;
         });
     }
+    fetchParcel() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const parcels = yield entity_1.default.find();
+            return parcels;
+        });
+    }
 }
-exports.createParcelService = new CreateParcelService();
+exports.parcelService = new ParcelService();

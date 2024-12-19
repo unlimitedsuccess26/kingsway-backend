@@ -9,3 +9,4 @@ const isAuth_1 = require("../middleware/isAuth");
 exports.ParcelRouter = (0, express_1.Router)();
 //create Parcel
 exports.ParcelRouter.post("/create/parcel", [isAuth_1.isAuth, validator_1.createParcelValidator.createParcel], (0, utils_1.wrapAsync)(controller_1.createParcelController.createParcel));
+exports.ParcelRouter.get("/parcel", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.createParcelController.fetchParcel));
