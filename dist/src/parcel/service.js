@@ -52,5 +52,14 @@ class ParcelService {
             return parcel;
         });
     }
+    updateParcelStatus(_id, status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const parcel = yield entity_1.default.findOneAndUpdate({ _id }, // Query to find the parcel by ID
+            { status }, // Update the 'status' field
+            { new: true } // Return the updated document
+            );
+            return parcel;
+        });
+    }
 }
 exports.parcelService = new ParcelService();

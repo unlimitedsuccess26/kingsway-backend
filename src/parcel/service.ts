@@ -53,6 +53,17 @@ class ParcelService {
 
     return parcel;
   }
+
+  public async updateParcelStatus(_id: string, status: string) {
+    const parcel = await Parcel.findOneAndUpdate(
+      { _id }, // Query to find the parcel by ID
+      { status }, // Update the 'status' field
+      { new: true } // Return the updated document
+    );
+  
+    return parcel;
+  }
+  
 }
 
 export const parcelService = new ParcelService();

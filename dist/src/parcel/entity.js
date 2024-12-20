@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+const enum_1 = require("./enum");
 const Schema = mongoose_1.default.Schema;
 const parcelSchema = new Schema({
     senderName: {
@@ -49,6 +50,7 @@ const parcelSchema = new Schema({
     status: {
         type: String,
         required: true,
+        enum: [enum_1.ParcelStatus.Completed, enum_1.ParcelStatus.Ongoing, enum_1.ParcelStatus.Pending],
     },
     createdAt: { type: Date, default: Date.now },
 });

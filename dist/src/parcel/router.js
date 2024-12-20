@@ -13,3 +13,5 @@ exports.ParcelRouter.post("/create/parcel", [isAuth_1.isAuth, validator_1.parcel
 exports.ParcelRouter.get("/parcel", [isAuth_1.isAuth], (0, utils_1.wrapAsync)(controller_1.createParcelController.fetchParcel));
 //Delete a single parcel with _id
 exports.ParcelRouter.delete("/parcel/:id", [isAuth_1.isAuth, validator_1.parcelValidator.validateParams], (0, utils_1.wrapAsync)(controller_1.createParcelController.deleteParcel));
+//Update a single parcel status with _id
+exports.ParcelRouter.patch("/parcel/:id", [isAuth_1.isAuth, validator_1.parcelValidator.validateParams, validator_1.parcelValidator.updateParcelStatus], (0, utils_1.wrapAsync)(controller_1.createParcelController.updateParcel));

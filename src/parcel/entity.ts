@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-import {  IParcel } from "./interface";
+import { IParcel } from "./interface";
+import { ParcelStatus } from "./enum";
 
 const Schema = mongoose.Schema;
 
@@ -48,6 +49,7 @@ const parcelSchema = new Schema({
   status: {
     type: String,
     required: true,
+    enum: [ParcelStatus.Completed, ParcelStatus.Ongoing, ParcelStatus.Pending],
   },
   createdAt: { type: Date, default: Date.now },
 });

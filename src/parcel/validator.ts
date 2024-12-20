@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 
 import { MessageResponse } from "../utils/enum";
+import { ParcelStatus } from "./enum";
 
 class ParcelValidator {
   public async createParcel(req: Request, res: Response, next: NextFunction) {
@@ -89,6 +90,32 @@ class ParcelValidator {
       });
     }
   }
+
+  public async updateParcelStatus(req: Request, res: Response, next: NextFunction) {
+    const schema = Joi.object({
+      status: Joi.string()
+        .valid(ParcelStatus.Pending, ParcelStatus.Completed, ParcelStatus.Ongoing)
+        .required()
+        .messages({
+          "any.only": `Status must be either ${ParcelStatus.Pending}, ${ParcelStatus.Completed} or ${ParcelStatus.Ongoing}.`,
+          "any.required": "Status is required.",
+          "string.base": "Status must be a text string.",
+        }),
+    });
+  
+    const { error } = schema.validate(req.body);
+  
+    if (!error) {
+      return next();
+    } else {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: error.details[0].message,
+        data: null,
+      });
+    }
+  }
+  
 }
 
 export const parcelValidator = new ParcelValidator();

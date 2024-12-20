@@ -16,6 +16,7 @@ exports.parcelValidator = void 0;
 const joi_1 = __importDefault(require("joi"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const enum_1 = require("../utils/enum");
+const enum_2 = require("./enum");
 class ParcelValidator {
     createParcel(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -98,6 +99,31 @@ class ParcelValidator {
                 data: null,
             });
         }
+    }
+    updateParcelStatus(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const schema = joi_1.default.object({
+                status: joi_1.default.string()
+                    .valid(enum_2.ParcelStatus.Pending, enum_2.ParcelStatus.Completed, enum_2.ParcelStatus.Ongoing)
+                    .required()
+                    .messages({
+                    "any.only": `Status must be either ${enum_2.ParcelStatus.Pending}, ${enum_2.ParcelStatus.Completed} or ${enum_2.ParcelStatus.Ongoing}.`,
+                    "any.required": "Status is required.",
+                    "string.base": "Status must be a text string.",
+                }),
+            });
+            const { error } = schema.validate(req.body);
+            if (!error) {
+                return next();
+            }
+            else {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: error.details[0].message,
+                    data: null,
+                });
+            }
+        });
     }
 }
 exports.parcelValidator = new ParcelValidator();

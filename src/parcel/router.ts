@@ -28,4 +28,11 @@ ParcelRouter.delete(
   wrapAsync(createParcelController.deleteParcel)
 );
 
+//Update a single parcel status with _id
+ParcelRouter.patch(
+  "/parcel/:id",
+  [isAuth, parcelValidator.validateParams, parcelValidator.updateParcelStatus],
+  wrapAsync(createParcelController.updateParcel)
+);
+
 

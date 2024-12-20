@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { MessageResponse } from "../utils/enum";
-import { IParcelUserInput } from "./interface";
+import { IParcelUpdate, IParcelUserInput } from "./interface";
 import { parcelService } from "./service";
 
 class CreateParcelController {
@@ -46,6 +46,31 @@ class CreateParcelController {
       message: MessageResponse.Success,
       description: "Parcel deleted successfully!",
       data: null,
+    });
+  }
+
+  public async updateParcel(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const body: IParcelUpdate = req.body;
+
+    const status = body.status;
+
+    const parcel = await parcelService.updateParcelStatus(id, status);
+
+    if (!parcel) {
+      return res.status(404).json({
+        message: MessageResponse.Error,
+        description: "Could not find parcel!",
+        data: null,
+      });
+    }
+
+
+    return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "Parcel status updated successfully!",
+      data: parcel,
     });
   }
 }

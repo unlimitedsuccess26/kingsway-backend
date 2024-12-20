@@ -52,5 +52,25 @@ class CreateParcelController {
             });
         });
     }
+    updateParcel(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const body = req.body;
+            const status = body.status;
+            const parcel = yield service_1.parcelService.updateParcelStatus(id, status);
+            if (!parcel) {
+                return res.status(404).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: "Could not find parcel!",
+                    data: null,
+                });
+            }
+            return res.status(200).json({
+                message: enum_1.MessageResponse.Success,
+                description: "Parcel status updated successfully!",
+                data: parcel,
+            });
+        });
+    }
 }
 exports.createParcelController = new CreateParcelController();

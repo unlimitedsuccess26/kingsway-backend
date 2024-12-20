@@ -27,3 +27,7 @@ export interface IParcelUserInput {
     parcelsDesignation: string;
     newLocation: string
 }
+
+export interface IParcelUpdate {
+  status: string;
+}
