@@ -32,7 +32,7 @@ ParcelRouter.delete(
 ParcelRouter.patch(
   "/parcel/:id",
   [isAuth, parcelValidator.validateParams, parcelValidator.updateParcelStatus],
-  wrapAsync(createParcelController.updateParcel)
+  wrapAsync(createParcelController.updateParcelStaus)
 );
 
 

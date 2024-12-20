@@ -52,7 +52,7 @@ class CreateParcelController {
             });
         });
     }
-    updateParcel(req, res) {
+    updateParcelStaus(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const body = req.body;

@@ -49,7 +49,7 @@ class CreateParcelController {
     });
   }
 
-  public async updateParcel(req: Request, res: Response) {
+  public async updateParcelStaus(req: Request, res: Response) {
     const { id } = req.params;
 
     const body: IParcelUpdate = req.body;
