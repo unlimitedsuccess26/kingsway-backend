@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createParcelValidator = void 0;
+exports.parcelValidator = void 0;
 const joi_1 = __importDefault(require("joi"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const enum_1 = require("../utils/enum");
-class CreateParcelValidator {
+class ParcelValidator {
     createParcel(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const schema = joi_1.default.object({
@@ -72,5 +73,31 @@ class CreateParcelValidator {
             }
         });
     }
+    validateParams(req, res, next) {
+        const schema = joi_1.default.object({
+            id: joi_1.default.string().custom((value, helpers) => {
+                if (!mongoose_1.default.Types.ObjectId.isValid(value)) {
+                    return helpers.message({
+                        custom: "ID must be a valid ObjectId",
+                    });
+                }
+                return value;
+            }).required().messages({
+                'string.base': 'ID must be a string',
+                'any.required': 'ID is required',
+            }),
+        });
+        const { error } = schema.validate(req.params);
+        if (!error) {
+            return next();
+        }
+        else {
+            return res.status(400).json({
+                message: enum_1.MessageResponse.Error,
+                description: error.details[0].message,
+                data: null,
+            });
+        }
+    }
 }
-exports.createParcelValidator = new CreateParcelValidator();
+exports.parcelValidator = new ParcelValidator();

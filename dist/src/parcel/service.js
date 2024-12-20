@@ -46,5 +46,11 @@ class ParcelService {
             return parcels;
         });
     }
+    deleteParcel(_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const parcel = yield entity_1.default.findOneAndDelete({ _id });
+            return parcel;
+        });
+    }
 }
 exports.parcelService = new ParcelService();

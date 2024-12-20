@@ -47,6 +47,12 @@ class ParcelService {
 
     return parcels;
   }
+
+  public async deleteParcel(_id: string) {
+    const parcel = await Parcel.findOneAndDelete({_id});
+
+    return parcel;
+  }
 }
 
 export const parcelService = new ParcelService();
