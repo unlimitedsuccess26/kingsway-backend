@@ -35,4 +35,18 @@ ParcelRouter.patch(
   wrapAsync(createParcelController.updateParcelStaus)
 );
 
+//Update parcel details with _id
+ParcelRouter.patch(
+  "/update/parcel/:id",
+  [isAuth, parcelValidator.validateParams, parcelValidator.updateParcel],
+  wrapAsync(createParcelController.updateParcelStaus)
+);
+
+//get parcel with parcel id
+ParcelRouter.get(
+  "/customer/parcel/:id",
+  [isAuth, parcelValidator.validateParams],
+  wrapAsync(createParcelController.updateParcelStaus)
+);
+
 

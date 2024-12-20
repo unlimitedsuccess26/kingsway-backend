@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { MessageResponse } from "../utils/enum";
-import { IParcelUpdate, IParcelUserInput } from "./interface";
+import { IParcelStatusUpdate, IParcelUpdateUserInput, IParcelUserInput } from "./interface";
 import { parcelService } from "./service";
 
 class CreateParcelController {
@@ -52,7 +52,7 @@ class CreateParcelController {
   public async updateParcelStaus(req: Request, res: Response) {
     const { id } = req.params;
 
-    const body: IParcelUpdate = req.body;
+    const body: IParcelStatusUpdate = req.body;
 
     const status = body.status;
 
@@ -73,6 +73,51 @@ class CreateParcelController {
       data: parcel,
     });
   }
+
+  public async updateParcel(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const body: IParcelUpdateUserInput = req.body;
+
+ 
+
+    const parcel = await parcelService.updateParcel(body, id);
+
+    if (!parcel) {
+      return res.status(404).json({
+        message: MessageResponse.Error,
+        description: "Could not find parcel!",
+        data: null,
+      });
+    }
+
+
+    return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "Parcel status updated successfully!",
+      data: parcel,
+    });
+  }
+
+  public async fetchParcelByParcelId(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const parcel = await parcelService.fetchParcelByParcleId(id);
+
+    if (!parcel) {
+      return res.status(404).json({
+        message: MessageResponse.Error,
+        description: "Could not find parcel!",
+        data: null,
+      });
+    }
+ 
+     return res.status(200).json({
+       message: MessageResponse.Success,
+       description: "Parcel fetched successfully!",
+       data: parcel,
+     });
+   }
 }
 
 export const createParcelController = new CreateParcelController();

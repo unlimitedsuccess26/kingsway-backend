@@ -1,40 +1,40 @@
 import { generateOrderId } from "../utils";
 import Parcel from "./entity";
 import { ParcelStatus } from "./enum";
-import { IParcelUserInput } from "./interface";
+import { IParcelUpdateUserInput, IParcelUserInput } from "./interface";
 
 class ParcelService {
   public async createParcel(input: IParcelUserInput) {
     const {
-     arrivalDate,
-     email,
-     freightDate, 
-     newLocation,
-     parcelWeight,
-     parcelsDesignation,
-     receiverEmail,
-     receiverName,
-     senderName
+      arrivalDate,
+      email,
+      freightDate,
+      newLocation,
+      parcelWeight,
+      parcelsDesignation,
+      receiverEmail,
+      receiverName,
+      senderName,
     } = input;
 
-   const orderId = generateOrderId();
+    const orderId = generateOrderId();
 
-   //console.log(orderId);
+    //console.log(orderId);
 
-   const status = ParcelStatus.Pending;
+    const status = ParcelStatus.Pending;
 
     const newParcel = new Parcel({
-        arrivalDate,
-        email,
-        freightDate, 
-        newLocation,
-        parcelWeight,
-        parcelsDesignation,
-        receiverEmail,
-        receiverName,
-        senderName,
-        orderId,
-        status
+      arrivalDate,
+      email,
+      freightDate,
+      newLocation,
+      parcelWeight,
+      parcelsDesignation,
+      receiverEmail,
+      receiverName,
+      senderName,
+      orderId,
+      status,
     });
 
     await newParcel.save();
@@ -49,7 +49,7 @@ class ParcelService {
   }
 
   public async deleteParcel(_id: string) {
-    const parcel = await Parcel.findOneAndDelete({_id});
+    const parcel = await Parcel.findOneAndDelete({ _id });
 
     return parcel;
   }
@@ -60,10 +60,29 @@ class ParcelService {
       { status }, // Update the 'status' field
       { new: true } // Return the updated document
     );
-  
+
     return parcel;
   }
-  
+
+  public async updateParcel(input: IParcelUpdateUserInput, _id: string) {
+   
+    const parcel = await Parcel.findOneAndUpdate(
+      { _id }, // Query to find the parcel by ID
+      {
+        ...input
+      }, // Update the values
+      { new: true } // Return the updated document
+    );
+
+    return parcel;
+  }
+
+  public async fetchParcelByParcleId(orderId: string) {
+
+    const parcel = await Parcel.findOne({orderId});
+
+    return parcel;
+  }
 }
 
 export const parcelService = new ParcelService();

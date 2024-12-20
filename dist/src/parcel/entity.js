@@ -35,6 +35,26 @@ const parcelSchema = new Schema({
         type: String,
         required: true,
     },
+    currentLocation: {
+        type: String,
+        default: "",
+    },
+    lastLocation: {
+        type: String,
+        default: "",
+    },
+    couriersMessage: {
+        type: String,
+        default: "",
+    },
+    freightType: {
+        type: String,
+        default: "",
+    },
+    remainingDistanceInMiles: {
+        type: String,
+        default: "",
+    },
     parcelsDesignation: {
         type: String,
         required: true,

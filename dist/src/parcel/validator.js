@@ -125,5 +125,79 @@ class ParcelValidator {
             }
         });
     }
+    updateParcel(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const schema = joi_1.default.object({
+                senderName: joi_1.default.string().required().messages({
+                    "string.base": "Sender name must be text",
+                    "any.required": "Sender name is required.",
+                }),
+                receiverName: joi_1.default.string().required().messages({
+                    "string.base": "Receiver name must be text",
+                    "any.required": "Receiver name is required.",
+                }),
+                email: joi_1.default.string().email().required().messages({
+                    "string.email": "Please enter a valid email address",
+                    "any.required": "Email address is required",
+                }),
+                receiverEmail: joi_1.default.string().email().required().messages({
+                    "string.email": "Please enter a valid receiver email address",
+                    "any.required": " Receiver email address is required",
+                }),
+                freightDate: joi_1.default.string().required().messages({
+                    "string.base": "Freight date must be text",
+                    "any.required": "Freight date is required.",
+                }),
+                arrivalDate: joi_1.default.string().required().messages({
+                    "string.base": "Arrival date must be text",
+                    "any.required": "Arrival date is required.",
+                }),
+                currentLocation: joi_1.default.string()
+                    .pattern(/^https:\/\/www\.google\.com\/maps\/embed\/v1\/place\?key=[A-Za-z0-9_-]+&q=[^&]+(&zoom=\d+)?(&maptype=[a-z]+)?$/i)
+                    .required()
+                    .messages({
+                    "string.pattern.base": "Current location must be a valid Google Maps embed URL.",
+                    "any.required": "Current location is required.",
+                }),
+                lastLocation: joi_1.default.string()
+                    .pattern(/^https:\/\/www\.google\.com\/maps\/embed\/v1\/place\?key=[A-Za-z0-9_-]+&q=[^&]+(&zoom=\d+)?(&maptype=[a-z]+)?$/i)
+                    .required()
+                    .messages({
+                    "string.pattern.base": "Last location must be a valid Google Maps embed URL.",
+                    "any.required": "Last location is required.",
+                }),
+                newLocation: joi_1.default.string()
+                    .pattern(/^https:\/\/www\.google\.com\/maps\/embed\/v1\/place\?key=[A-Za-z0-9_-]+&q=[^&]+(&zoom=\d+)?(&maptype=[a-z]+)?$/i)
+                    .required()
+                    .messages({
+                    "string.pattern.base": "New location must be a valid Google Maps embed URL.",
+                    "any.required": "New location is required.",
+                }),
+                couriersMessage: joi_1.default.string().required().messages({
+                    "string.base": "Couriers message must be text",
+                    "any.required": "Couriers message required.",
+                }),
+                freightType: joi_1.default.string().required().messages({
+                    "string.base": "Freight type message must be text",
+                    "any.required": "Freight type message required.",
+                }),
+                remainingDistanceInMiles: joi_1.default.string().required().messages({
+                    "string.base": "Remaining distance in miles message must be text",
+                    "any.required": "Remaining distance in miles message required.",
+                }),
+            });
+            const { error } = schema.validate(req.body);
+            if (!error) {
+                return next();
+            }
+            else {
+                return res.status(400).json({
+                    message: enum_1.MessageResponse.Error,
+                    description: error.details[0].message,
+                    data: null,
+                });
+            }
+        });
+    }
 }
 exports.parcelValidator = new ParcelValidator();
