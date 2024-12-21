@@ -142,23 +142,23 @@ class ParcelValidator {
         "string.base": "Arrival date must be text",
         "any.required": "Arrival date is required.",
       }), 
-      currentLocation: Joi.string()
-      .pattern(
-        /^https:\/\/www\.google\.com\/maps\/embed\/v1\/place\?key=[A-Za-z0-9_-]+&q=[^&]+(&zoom=\d+)?(&maptype=[a-z]+)?$/i
-      )
-      .required()
-      .messages({
-        "string.pattern.base": "Current location must be a valid Google Maps embed URL.",
+      currentLocation: Joi.string().required().messages({
+        "string.base": "Current location must be text",
         "any.required": "Current location is required.",
       }), 
       lastLocation: Joi.string().required().messages({
         "string.base": "Last location must be text",
         "any.required": "Last location is required.",
       }),
-      newLocation: Joi.string().required().messages({
-        "string.base": "New location must be text",
+      newLocation: Joi.string()
+      .pattern(
+        /^https:\/\/www\.google\.com\/maps\/embed\/v1\/place\?key=[A-Za-z0-9_-]+&q=[^&]+(&zoom=\d+)?(&maptype=[a-z]+)?$/i
+      )
+      .required()
+      .messages({
+        "string.pattern.base": "New location must be a valid Google Maps embed URL.",
         "any.required": "New location is required.",
-      }),
+      }) ,
       couriersMessage: Joi.string().required().messages({
         "string.base": "Couriers message must be text",
         "any.required": "Couriers message required.",
