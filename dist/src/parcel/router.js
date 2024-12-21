@@ -18,4 +18,4 @@ exports.ParcelRouter.patch("/parcel/:id", [isAuth_1.isAuth, validator_1.parcelVa
 //Update parcel details with _id
 exports.ParcelRouter.patch("/update/parcel/:id", [isAuth_1.isAuth, validator_1.parcelValidator.validateParams, validator_1.parcelValidator.updateParcel], (0, utils_1.wrapAsync)(controller_1.createParcelController.updateParcel));
 //get parcel with parcel id
-exports.ParcelRouter.get("/customer/parcel/:id", [validator_1.parcelValidator.validateParams], (0, utils_1.wrapAsync)(controller_1.createParcelController.fetchParcelByParcelId));
+exports.ParcelRouter.get("/customer/parcel/:trackingId", [validator_1.parcelValidator.validateOrderIdParams], (0, utils_1.wrapAsync)(controller_1.createParcelController.fetchParcelByParcelId));

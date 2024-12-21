@@ -100,6 +100,25 @@ class ParcelValidator {
             });
         }
     }
+    validateOrderIdParams(req, res, next) {
+        const schema = joi_1.default.object({
+            trackingId: joi_1.default.string().required().messages({
+                "string.base": "TrackingId must be text",
+                "any.required": "TrackingId is required.",
+            }),
+        });
+        const { error } = schema.validate(req.params);
+        if (!error) {
+            return next();
+        }
+        else {
+            return res.status(400).json({
+                message: enum_1.MessageResponse.Error,
+                description: error.details[0].message,
+                data: null,
+            });
+        }
+    }
     updateParcelStatus(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const schema = joi_1.default.object({

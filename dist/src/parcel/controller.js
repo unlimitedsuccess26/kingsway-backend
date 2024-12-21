@@ -93,8 +93,8 @@ class CreateParcelController {
     }
     fetchParcelByParcelId(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const parcel = yield service_1.parcelService.fetchParcelByParcleId(id);
+            const { trackingId } = req.params;
+            const parcel = yield service_1.parcelService.fetchParcelByParcleId(trackingId);
             if (!parcel) {
                 return res.status(404).json({
                     message: enum_1.MessageResponse.Error,

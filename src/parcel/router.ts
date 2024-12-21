@@ -44,8 +44,8 @@ ParcelRouter.patch(
 
 //get parcel with parcel id
 ParcelRouter.get(
-  "/customer/parcel/:id",
-  [parcelValidator.validateParams],
+  "/customer/parcel/:trackingId",
+  [parcelValidator.validateOrderIdParams],
   wrapAsync(createParcelController.fetchParcelByParcelId)
 );
 

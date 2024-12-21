@@ -100,9 +100,9 @@ class CreateParcelController {
   }
 
   public async fetchParcelByParcelId(req: Request, res: Response) {
-    const { id } = req.params;
+    const { trackingId } = req.params;
 
-    const parcel = await parcelService.fetchParcelByParcleId(id);
+    const parcel = await parcelService.fetchParcelByParcleId(trackingId);
 
     if (!parcel) {
       return res.status(404).json({

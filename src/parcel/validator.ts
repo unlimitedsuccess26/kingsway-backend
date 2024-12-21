@@ -91,6 +91,27 @@ class ParcelValidator {
     }
   }
 
+  public validateOrderIdParams(req: Request, res: Response, next: NextFunction) {
+    const schema = Joi.object({
+      trackingId: Joi.string().required().messages({
+        "string.base": "TrackingId must be text",
+        "any.required": "TrackingId is required.",
+      }),
+    });
+
+    const { error } = schema.validate(req.params);
+
+    if (!error) {
+      return next();
+    } else {
+      return res.status(400).json({
+        message: MessageResponse.Error,
+        description: error.details[0].message,
+        data: null,
+      });
+    }
+  }
+
   public async updateParcelStatus(req: Request, res: Response, next: NextFunction) {
     const schema = Joi.object({
       status: Joi.string()
