@@ -63,7 +63,22 @@ class ParcelService {
     }
     updateParcel(input, _id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const parcel = yield entity_1.default.findOneAndUpdate({ _id }, Object.assign({}, input), // Update the values
+            const { arrivalDate, couriersMessage, currentLocation, email, freightDate, freightType, lastLocation, newLocation, receiverEmail, receiverName, remainingDistanceInMiles, senderName, } = input;
+            const parcel = yield entity_1.default.findOneAndUpdate({ _id }, // Query to find the parcel by ID
+            {
+                arrivalDate,
+                couriersMessage,
+                currentLocation,
+                email,
+                freightDate,
+                freightType,
+                lastLocation,
+                newLocation,
+                receiverEmail,
+                receiverName,
+                remainingDistanceInMiles,
+                senderName,
+            }, // Update the values
             { new: true } // Return the updated document
             );
             return parcel;

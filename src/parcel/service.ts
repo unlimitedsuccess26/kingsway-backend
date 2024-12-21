@@ -65,11 +65,36 @@ class ParcelService {
   }
 
   public async updateParcel(input: IParcelUpdateUserInput, _id: string) {
-   
+    const {
+      arrivalDate,
+      couriersMessage,
+      currentLocation,
+      email,
+      freightDate,
+      freightType,
+      lastLocation,
+      newLocation,
+      receiverEmail,
+      receiverName,
+      remainingDistanceInMiles,
+      senderName,
+    } = input;
+
     const parcel = await Parcel.findOneAndUpdate(
       { _id }, // Query to find the parcel by ID
       {
-        ...input
+        arrivalDate,
+        couriersMessage,
+        currentLocation,
+        email,
+        freightDate,
+        freightType,
+        lastLocation,
+        newLocation,
+        receiverEmail,
+        receiverName,
+        remainingDistanceInMiles,
+        senderName,
       }, // Update the values
       { new: true } // Return the updated document
     );
@@ -78,8 +103,7 @@ class ParcelService {
   }
 
   public async fetchParcelByParcleId(orderId: string) {
-
-    const parcel = await Parcel.findOne({orderId});
+    const parcel = await Parcel.findOne({ orderId });
 
     return parcel;
   }

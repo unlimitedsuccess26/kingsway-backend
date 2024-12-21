@@ -94,7 +94,7 @@ class CreateParcelController {
 
     return res.status(200).json({
       message: MessageResponse.Success,
-      description: "Parcel status updated successfully!",
+      description: "Parcel updated successfully!",
       data: parcel,
     });
   }

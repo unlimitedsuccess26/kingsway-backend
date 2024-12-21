@@ -86,7 +86,7 @@ class CreateParcelController {
             }
             return res.status(200).json({
                 message: enum_1.MessageResponse.Success,
-                description: "Parcel status updated successfully!",
+                description: "Parcel updated successfully!",
                 data: parcel,
             });
         });
