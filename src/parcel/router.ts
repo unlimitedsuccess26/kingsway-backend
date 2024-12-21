@@ -39,14 +39,14 @@ ParcelRouter.patch(
 ParcelRouter.patch(
   "/update/parcel/:id",
   [isAuth, parcelValidator.validateParams, parcelValidator.updateParcel],
-  wrapAsync(createParcelController.updateParcelStaus)
+  wrapAsync(createParcelController.updateParcel)
 );
 
 //get parcel with parcel id
 ParcelRouter.get(
   "/customer/parcel/:id",
   [isAuth, parcelValidator.validateParams],
-  wrapAsync(createParcelController.updateParcelStaus)
+  wrapAsync(createParcelController.fetchParcelByParcelId)
 );
 
 

@@ -83,18 +83,7 @@ class ParcelService {
     const parcel = await Parcel.findOneAndUpdate(
       { _id }, // Query to find the parcel by ID
       {
-        arrivalDate,
-        couriersMessage,
-        currentLocation,
-        email,
-        freightDate,
-        freightType,
-        lastLocation,
-        newLocation,
-        receiverEmail,
-        receiverName,
-        remainingDistanceInMiles,
-        senderName,
+        ...input
       }, // Update the values
       { new: true } // Return the updated document
     );
