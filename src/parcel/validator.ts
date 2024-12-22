@@ -40,15 +40,18 @@ class ParcelValidator {
         "string.base": "Parcel designation must be text",
         "any.required": "Parcel designation is required.",
       }),
-      newLocation: Joi.string()
-        .pattern(
-          /^https:\/\/www\.google\.com\/maps\/embed\/v1\/place\?key=[A-Za-z0-9_-]+&q=[^&]+(&zoom=\d+)?(&maptype=[a-z]+)?$/i
-        )
-        .required()
-        .messages({
-          "string.pattern.base": "New location must be a valid Google Maps embed URL.",
-          "any.required": "New location is required.",
-        }),
+      newLocation: Joi.string().required().messages({
+        "string.base": "New location must be text",
+        "any.required": "New location is required.",
+      }),
+      phoneNumber: Joi.string().required().messages({
+        "string.base": "Phone number must be text",
+        "any.required": "Phone number is required.",
+      }),
+      address: Joi.string().required().messages({
+        "string.base": "Address must be text",
+        "any.required": "Address is required.",
+      }),
     });
     const { error } = schema.validate(req.body);
 

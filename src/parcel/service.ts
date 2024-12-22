@@ -23,7 +23,7 @@ class ParcelService {
 
     const status = ParcelStatus.Pending;
 
-    const newParcel = new Parcel({
+    let newParcel = new Parcel({
       arrivalDate,
       email,
       freightDate,
@@ -37,9 +37,9 @@ class ParcelService {
       status,
     });
 
-    await newParcel.save();
+  newParcel =  await newParcel.save();
 
-    return;
+    return newParcel;
   }
 
   public async fetchParcel() {

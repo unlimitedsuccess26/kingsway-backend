@@ -23,7 +23,7 @@ class ParcelService {
             const orderId = (0, utils_1.generateOrderId)();
             //console.log(orderId);
             const status = enum_1.ParcelStatus.Pending;
-            const newParcel = new entity_1.default({
+            let newParcel = new entity_1.default({
                 arrivalDate,
                 email,
                 freightDate,
@@ -36,8 +36,8 @@ class ParcelService {
                 orderId,
                 status,
             });
-            yield newParcel.save();
-            return;
+            newParcel = yield newParcel.save();
+            return newParcel;
         });
     }
     fetchParcel() {

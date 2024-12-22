@@ -1,14 +1,31 @@
 import { Request, Response } from "express";
 
 import { MessageResponse } from "../utils/enum";
-import { IParcelStatusUpdate, IParcelUpdateUserInput, IParcelUserInput } from "./interface";
+import {
+  IParcelSendEmail,
+  IParcelStatusUpdate,
+  IParcelUpdateUserInput,
+  IParcelUserInput,
+} from "./interface";
 import { parcelService } from "./service";
+import { sendMessageToParcelReceiver } from "../utils/email";
 
 class CreateParcelController {
   public async createParcel(req: Request, res: Response) {
-    const body: IParcelUserInput  = req.body;
+    const body: IParcelUserInput = req.body;
 
-    await parcelService.createParcel(body);
+    const parcel = await parcelService.createParcel(body);
+
+    const value: IParcelSendEmail = {
+      address: parcel.address,
+      receiverEmail: parcel.receiverEmail,
+      receiverName: parcel.receiverName,
+      phoneNumber: parcel.phoneNumber,
+      trackingId: parcel.orderId,
+    };
+
+    sendMessageToParcelReceiver(value);
+
 
     return res.status(201).json({
       message: MessageResponse.Success,
@@ -18,8 +35,7 @@ class CreateParcelController {
   }
 
   public async fetchParcel(req: Request, res: Response) {
-
-   const parcels = await parcelService.fetchParcel();
+    const parcels = await parcelService.fetchParcel();
 
     return res.status(200).json({
       message: MessageResponse.Success,
@@ -40,7 +56,6 @@ class CreateParcelController {
         data: null,
       });
     }
-
 
     return res.status(200).json({
       message: MessageResponse.Success,
@@ -66,7 +81,6 @@ class CreateParcelController {
       });
     }
 
-
     return res.status(200).json({
       message: MessageResponse.Success,
       description: "Parcel status updated successfully!",
@@ -79,8 +93,6 @@ class CreateParcelController {
 
     const body: IParcelUpdateUserInput = req.body;
 
- 
-
     const parcel = await parcelService.updateParcel(body, id);
 
     if (!parcel) {
@@ -90,7 +102,6 @@ class CreateParcelController {
         data: null,
       });
     }
-
 
     return res.status(200).json({
       message: MessageResponse.Success,
@@ -111,13 +122,13 @@ class CreateParcelController {
         data: null,
       });
     }
- 
-     return res.status(200).json({
-       message: MessageResponse.Success,
-       description: "Parcel fetched successfully!",
-       data: parcel,
-     });
-   }
+
+    return res.status(200).json({
+      message: MessageResponse.Success,
+      description: "Parcel fetched successfully!",
+      data: parcel,
+    });
+  }
 }
 
 export const createParcelController = new CreateParcelController();

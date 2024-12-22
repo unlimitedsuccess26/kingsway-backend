@@ -12,11 +12,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createParcelController = void 0;
 const enum_1 = require("../utils/enum");
 const service_1 = require("./service");
+const email_1 = require("../utils/email");
 class CreateParcelController {
     createParcel(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const body = req.body;
-            yield service_1.parcelService.createParcel(body);
+            const parcel = yield service_1.parcelService.createParcel(body);
+            const value = {
+                address: parcel.address,
+                receiverEmail: parcel.receiverEmail,
+                receiverName: parcel.receiverName,
+                phoneNumber: parcel.phoneNumber,
+                trackingId: parcel.orderId,
+            };
+            (0, email_1.sendMessageToParcelReceiver)(value);
             return res.status(201).json({
                 message: enum_1.MessageResponse.Success,
                 description: "Parcel created successfully!",

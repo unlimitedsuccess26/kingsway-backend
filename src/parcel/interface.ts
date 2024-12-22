@@ -13,6 +13,8 @@ export interface IParcel extends Document {
   orderId: string;
   status: string;
   createdAt: Date;
+  phoneNumber: string;
+    address: string;
 }
 
 
@@ -25,7 +27,9 @@ export interface IParcelUserInput {
     arrivalDate: string;
     parcelWeight: string;
     parcelsDesignation: string;
-    newLocation: string
+    newLocation: string;
+    phoneNumber: string;
+    address: string;
 }
 
 export interface IParcelStatusUpdate {
@@ -43,6 +47,16 @@ export interface IParcelUpdateUserInput {
   lastLocation: string;
   couriersMessage: string;
   freightType: string;
+  phoneNumber: string;
+  address: string;
   remainingDistanceInMiles: string;
   newLocation: string;
+}
+
+export interface IParcelSendEmail {
+  receiverName: string;
+  receiverEmail: string;
+  trackingId: string;
+  phoneNumber: string;
+  address: string;
 }
