@@ -18,14 +18,16 @@ class CreateParcelController {
         return __awaiter(this, void 0, void 0, function* () {
             const body = req.body;
             const parcel = yield service_1.parcelService.createParcel(body);
-            const value = {
+            const commonType = {
                 parcelsDesignation: parcel.parcelsDesignation,
-                receiverEmail: parcel.receiverEmail,
                 receiverName: parcel.receiverName,
                 phoneNumber: parcel.phoneNumber,
                 trackingId: parcel.orderId,
             };
-            (0, email_1.sendMessageToParcelReceiver)(value);
+            const parcelReceiver = Object.assign({ receiverEmail: parcel.receiverEmail }, commonType);
+            const parcelSender = Object.assign({ receiverEmail: parcel.email }, commonType);
+            (0, email_1.sendMessageToParcelReceiver)(parcelReceiver);
+            (0, email_1.sendMessageToParcelSender)(parcelSender);
             return res.status(201).json({
                 message: enum_1.MessageResponse.Success,
                 description: "Parcel created successfully!",

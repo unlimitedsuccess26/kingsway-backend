@@ -8,7 +8,7 @@ import {
   IParcelUserInput,
 } from "./interface";
 import { parcelService } from "./service";
-import { sendMessageToParcelReceiver } from "../utils/email";
+import { sendMessageToParcelReceiver, sendMessageToParcelSender } from "../utils/email";
 
 class CreateParcelController {
   public async createParcel(req: Request, res: Response) {
@@ -16,15 +16,26 @@ class CreateParcelController {
 
     const parcel = await parcelService.createParcel(body);
 
-    const value: IParcelSendEmail = {
+    const commonType = {
       parcelsDesignation: parcel.parcelsDesignation,
-      receiverEmail: parcel.receiverEmail,
       receiverName: parcel.receiverName,
       phoneNumber: parcel.phoneNumber,
       trackingId: parcel.orderId,
     };
 
-    sendMessageToParcelReceiver(value);
+    const parcelReceiver: IParcelSendEmail = {  
+      receiverEmail: parcel.receiverEmail,
+     ...commonType
+    };
+
+    const parcelSender: IParcelSendEmail = {
+      receiverEmail: parcel.email,
+     ...commonType
+    };
+
+    sendMessageToParcelReceiver(parcelReceiver);
+
+    sendMessageToParcelSender(parcelSender);
 
 
     return res.status(201).json({
