@@ -51,6 +51,7 @@ export interface IParcelUpdateUserInput {
   address: string;
   remainingDistanceInMiles: string;
   newLocation: string;
+  
 }
 
 export interface IParcelSendEmail {

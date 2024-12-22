@@ -195,6 +195,14 @@ class ParcelValidator {
         "string.base": "Remaining distance in miles message must be text",
         "any.required": "Remaining distance in miles message required.",
       }),
+      phoneNumber: Joi.string().required().messages({
+        "string.base": "Phone number must be text",
+        "any.required": "Phone number is required.",
+      }),
+      address: Joi.string().required().messages({
+        "string.base": "Address must be text",
+        "any.required": "Address is required.",
+      }),
     });
     const { error } = schema.validate(req.body);
 
