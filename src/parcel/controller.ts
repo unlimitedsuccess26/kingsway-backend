@@ -25,12 +25,13 @@ class CreateParcelController {
 
     const parcelReceiver: IParcelSendEmail = {  
       receiverEmail: parcel.receiverEmail,
-     ...commonType
+      ...commonType
     };
 
     const parcelSender: IParcelSendEmail = {
-      receiverEmail: parcel.email,
-     ...commonType
+     ...commonType,
+     receiverEmail: parcel.email,
+     receiverName: parcel.senderName,
     };
 
     sendMessageToParcelReceiver(parcelReceiver);

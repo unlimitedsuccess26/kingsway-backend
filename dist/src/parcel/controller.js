@@ -25,7 +25,7 @@ class CreateParcelController {
                 trackingId: parcel.orderId,
             };
             const parcelReceiver = Object.assign({ receiverEmail: parcel.receiverEmail }, commonType);
-            const parcelSender = Object.assign({ receiverEmail: parcel.email }, commonType);
+            const parcelSender = Object.assign(Object.assign({}, commonType), { receiverEmail: parcel.email, receiverName: parcel.senderName });
             (0, email_1.sendMessageToParcelReceiver)(parcelReceiver);
             (0, email_1.sendMessageToParcelSender)(parcelSender);
             return res.status(201).json({
