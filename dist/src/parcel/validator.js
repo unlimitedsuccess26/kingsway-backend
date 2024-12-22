@@ -57,10 +57,6 @@ class ParcelValidator {
                     "string.base": "Phone number must be text",
                     "any.required": "Phone number is required.",
                 }),
-                address: joi_1.default.string().required().messages({
-                    "string.base": "Address must be text",
-                    "any.required": "Address is required.",
-                }),
             });
             const { error } = schema.validate(req.body);
             if (!error) {
@@ -195,10 +191,6 @@ class ParcelValidator {
                 phoneNumber: joi_1.default.string().required().messages({
                     "string.base": "Phone number must be text",
                     "any.required": "Phone number is required.",
-                }),
-                address: joi_1.default.string().required().messages({
-                    "string.base": "Address must be text",
-                    "any.required": "Address is required.",
                 }),
             });
             const { error } = schema.validate(req.body);

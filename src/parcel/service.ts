@@ -23,16 +23,9 @@ class ParcelService {
     const status = ParcelStatus.Pending;
 
     let newParcel = new Parcel({
-      arrivalDate,
-      email,
-      freightDate,
-      parcelWeight,
-      parcelsDesignation,
-      receiverEmail,
-      receiverName,
-      senderName,
       orderId,
       status,
+     ...input
     });
 
   newParcel =  await newParcel.save();

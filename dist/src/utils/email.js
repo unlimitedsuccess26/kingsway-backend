@@ -409,7 +409,7 @@ const sendMessageToParcelReceiver = (input) => __awaiter(void 0, void 0, void 0,
 
         <ul class="details-list">
           <li><span>Name:</span> ${input.receiverName}</li>
-          <li><span>Address:</span> ${input.address}</li>
+          <li><span>Address:</span> ${input.parcelsDesignation}</li>
           <li><span>Email:</span> ${input.receiverEmail}</li>
           <li><span>Phone number:</span> ${input.phoneNumber}</li>
         </ul>

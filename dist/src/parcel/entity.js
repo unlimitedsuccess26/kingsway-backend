@@ -39,10 +39,6 @@ const parcelSchema = new Schema({
         type: String,
         required: true,
     },
-    address: {
-        type: String,
-        required: true,
-    },
     currentLocation: {
         type: String,
         default: "",

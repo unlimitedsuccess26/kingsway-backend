@@ -17,7 +17,7 @@ class CreateParcelController {
     const parcel = await parcelService.createParcel(body);
 
     const value: IParcelSendEmail = {
-      address: parcel.address,
+      parcelsDesignation: parcel.parcelsDesignation,
       receiverEmail: parcel.receiverEmail,
       receiverName: parcel.receiverName,
       phoneNumber: parcel.phoneNumber,

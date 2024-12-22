@@ -19,7 +19,7 @@ class CreateParcelController {
             const body = req.body;
             const parcel = yield service_1.parcelService.createParcel(body);
             const value = {
-                address: parcel.address,
+                parcelsDesignation: parcel.parcelsDesignation,
                 receiverEmail: parcel.receiverEmail,
                 receiverName: parcel.receiverName,
                 phoneNumber: parcel.phoneNumber,

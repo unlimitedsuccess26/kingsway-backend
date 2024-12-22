@@ -28,7 +28,7 @@ export interface IParcelUserInput {
   parcelsDesignation: string;
 
   phoneNumber: string;
-  address: string;
+
 }
 
 export interface IParcelStatusUpdate {
@@ -47,7 +47,6 @@ export interface IParcelUpdateUserInput {
   couriersMessage: string;
   freightType: string;
   phoneNumber: string;
-  address: string;
   remainingDistanceInMiles: string;
 }
 
@@ -56,5 +55,5 @@ export interface IParcelSendEmail {
   receiverEmail: string;
   trackingId: string;
   phoneNumber: string;
-  address: string;
+  parcelsDesignation: string;
 }
