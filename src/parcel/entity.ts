@@ -66,10 +66,6 @@ const parcelSchema = new Schema({
     type: String,
     required: true,
   },
-  newLocation: {
-    type: String,
-    required: true,
-  },
   orderId: {
     type: String,
     required: true,

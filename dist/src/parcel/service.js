@@ -19,7 +19,7 @@ const enum_1 = require("./enum");
 class ParcelService {
     createParcel(input) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { arrivalDate, email, freightDate, newLocation, parcelWeight, parcelsDesignation, receiverEmail, receiverName, senderName, } = input;
+            const { arrivalDate, email, freightDate, parcelWeight, parcelsDesignation, receiverEmail, receiverName, senderName, } = input;
             const orderId = (0, utils_1.generateOrderId)();
             //console.log(orderId);
             const status = enum_1.ParcelStatus.Pending;
@@ -27,7 +27,6 @@ class ParcelService {
                 arrivalDate,
                 email,
                 freightDate,
-                newLocation,
                 parcelWeight,
                 parcelsDesignation,
                 receiverEmail,
@@ -63,7 +62,6 @@ class ParcelService {
     }
     updateParcel(input, _id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { arrivalDate, couriersMessage, currentLocation, email, freightDate, freightType, lastLocation, newLocation, receiverEmail, receiverName, remainingDistanceInMiles, senderName, } = input;
             const parcel = yield entity_1.default.findOneAndUpdate({ _id }, Object.assign({}, input), // Update the values
             { new: true } // Return the updated document
             );

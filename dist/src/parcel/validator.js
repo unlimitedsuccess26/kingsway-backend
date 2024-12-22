@@ -53,10 +53,6 @@ class ParcelValidator {
                     "string.base": "Parcel designation must be text",
                     "any.required": "Parcel designation is required.",
                 }),
-                newLocation: joi_1.default.string().required().messages({
-                    "string.base": "New location must be text",
-                    "any.required": "New location is required.",
-                }),
                 phoneNumber: joi_1.default.string().required().messages({
                     "string.base": "Phone number must be text",
                     "any.required": "Phone number is required.",
@@ -183,13 +179,6 @@ class ParcelValidator {
                 lastLocation: joi_1.default.string().required().messages({
                     "string.base": "Last location must be text",
                     "any.required": "Last location is required.",
-                }),
-                newLocation: joi_1.default.string()
-                    .pattern(/^https:\/\/www\.google\.com\/maps\/embed\/v1\/place\?key=[A-Za-z0-9_-]+&q=[^&]+(&zoom=\d+)?(&maptype=[a-z]+)?$/i)
-                    .required()
-                    .messages({
-                    "string.pattern.base": "New location must be a valid Google Maps embed URL.",
-                    "any.required": "New location is required.",
                 }),
                 couriersMessage: joi_1.default.string().required().messages({
                     "string.base": "Couriers message must be text",

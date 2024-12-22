@@ -1,4 +1,4 @@
-import  { Document } from "mongoose";
+import { Document } from "mongoose";
 
 export interface IParcel extends Document {
   senderName: string;
@@ -9,27 +9,26 @@ export interface IParcel extends Document {
   arrivalDate: string;
   parcelWeight: string;
   parcelsDesignation: string;
-  newLocation: string;
+
   orderId: string;
   status: string;
   createdAt: Date;
   phoneNumber: string;
-    address: string;
+  address: string;
 }
 
-
 export interface IParcelUserInput {
-    senderName: string;
-    receiverName: string;
-    email: string;
-    receiverEmail: string;
-    freightDate: string;
-    arrivalDate: string;
-    parcelWeight: string;
-    parcelsDesignation: string;
-    newLocation: string;
-    phoneNumber: string;
-    address: string;
+  senderName: string;
+  receiverName: string;
+  email: string;
+  receiverEmail: string;
+  freightDate: string;
+  arrivalDate: string;
+  parcelWeight: string;
+  parcelsDesignation: string;
+
+  phoneNumber: string;
+  address: string;
 }
 
 export interface IParcelStatusUpdate {
@@ -50,8 +49,6 @@ export interface IParcelUpdateUserInput {
   phoneNumber: string;
   address: string;
   remainingDistanceInMiles: string;
-  newLocation: string;
-  
 }
 
 export interface IParcelSendEmail {

@@ -9,7 +9,6 @@ class ParcelService {
       arrivalDate,
       email,
       freightDate,
-      newLocation,
       parcelWeight,
       parcelsDesignation,
       receiverEmail,
@@ -27,7 +26,6 @@ class ParcelService {
       arrivalDate,
       email,
       freightDate,
-      newLocation,
       parcelWeight,
       parcelsDesignation,
       receiverEmail,
@@ -65,20 +63,7 @@ class ParcelService {
   }
 
   public async updateParcel(input: IParcelUpdateUserInput, _id: string) {
-    const {
-      arrivalDate,
-      couriersMessage,
-      currentLocation,
-      email,
-      freightDate,
-      freightType,
-      lastLocation,
-      newLocation,
-      receiverEmail,
-      receiverName,
-      remainingDistanceInMiles,
-      senderName,
-    } = input;
+   
 
     const parcel = await Parcel.findOneAndUpdate(
       { _id }, // Query to find the parcel by ID
