@@ -24,42 +24,62 @@ const clientUrl = process.env.CLIENT_URL;
 const adminEmail = (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
 dotenv_1.default.config();
 const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        // const transporter = nodemailer.createTransport({
-        //   host: 'smtp-relay.sendinblue.com',
-        //   port: 587,
-        //   secure: false,
-        //   auth: {
-        //     user: smtpSender,
-        //     pass: smtpPassword,
-        //   },
-        // });
-        // const mailOptions = {
-        //   from: `Kingsway <${smtpEmailFrom}>`,
-        //   to: input.receiverEmail,
-        //   subject: input.subject,
-        //   html: input.emailTemplate,
-        // };
-        const transporter = nodemailer_1.default.createTransport({
-            service: "gmail",
-            auth: {
-                user: smtpSender,
-                pass: smtpPassword,
-            },
-        });
-        const mailOptions = {
-            from: `Kingsway <${smtpEmailFrom}>`,
-            to: input.receiverEmail,
-            subject: input.subject,
-            html: input.emailTemplate,
-        };
-        const info = yield transporter.sendMail(mailOptions);
-        return info.response;
-    }
-    catch (error) {
-        console.error("Email sending error:", error);
-        // throw error;
-    }
+    var transport = nodemailer_1.default.createTransport({
+        host: "smtp.zeptomail.com",
+        port: 587,
+        auth: {
+            user: "emailapikey",
+            pass: "wSsVR6108hL2Da94yjSqdrtrkQxSBlukHUwoiwH0vnH5TajG98c8lUefV1P1GaBMQjY9QGNBo+4qnksAhDFbj9wsy15VCSiF9mqRe1U4J3x17qnvhDzIVmlbkBqJJYMNwAxqm2BoGswq+g==",
+        },
+    });
+    var mailOptions = {
+        from: '"Kingsway Team" <noreply@kingswaycompany.com>',
+        to: input.receiverEmail,
+        replyTo: "support@kingswaycompany.com",
+        subject: input.subject,
+        html: input.emailTemplate,
+    };
+    transport.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log("Successfully sent");
+    });
+    // try {
+    //   // const transporter = nodemailer.createTransport({
+    //   //   host: 'smtp-relay.sendinblue.com',
+    //   //   port: 587,
+    //   //   secure: false,
+    //   //   auth: {
+    //   //     user: smtpSender,
+    //   //     pass: smtpPassword,
+    //   //   },
+    //   // });
+    //   // const mailOptions = {
+    //   //   from: `Kingsway <${smtpEmailFrom}>`,
+    //   //   to: input.receiverEmail,
+    //   //   subject: input.subject,
+    //   //   html: input.emailTemplate,
+    //   // };
+    //   const transporter = nodemailer.createTransport({
+    //     service: "gmail",
+    //     auth: {
+    //       user: smtpSender,
+    //       pass: smtpPassword,
+    //     },
+    //   });
+    //   const mailOptions = {
+    //     from: `Kingsway <${smtpEmailFrom}>`,
+    //     to: input.receiverEmail,
+    //     subject: input.subject,
+    //     html: input.emailTemplate,
+    //   };
+    //   const info = await transporter.sendMail(mailOptions);
+    //   return info.response;
+    // } catch (error) {
+    //   console.error("Email sending error:", error);
+    //   // throw error;
+    // }
 });
 exports.sendEmail = sendEmail;
 const sendContactUsEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, function* () {
