@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendMessageToParcelSender = exports.sendMessageToParcelReceiver = exports.sendContactUsEmailToAdmin = exports.sendEmail = void 0;
+exports.sendMessageToParcelSender = exports.sendMessageToParcelReceiver = exports.sendReachOutEmailToAdmin = exports.sendContactUsEmailToAdmin = exports.sendEmail = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
 dotenv_1.default.config();
@@ -33,7 +33,7 @@ const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
         },
     });
     var mailOptions = {
-        from: '"Kingsway Team" <noreply@kingswaycompany.com>',
+        from: '"Kingsway Team" <support@kingswaycompany.com>',
         to: input.receiverEmail,
         replyTo: "support@kingswaycompany.com",
         subject: input.subject,
@@ -217,7 +217,7 @@ const sendContactUsEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, f
 
     <div class="container">
         <div class="header">
-            <img src="https://kingways-logistics.vercel.app/images/kingswaylogo.svg" alt="Kingsway Logistics Logo">
+            <img src="${clientUrl}/images/kingswaylogo.svg" alt="Kingsway Logistics Logo">
             <h1>Delivery Update</h1>
         </div>
 
@@ -246,6 +246,331 @@ const sendContactUsEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, f
     });
 });
 exports.sendContactUsEmailToAdmin = sendContactUsEmailToAdmin;
+const sendReachOutEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    const now = new Date();
+    const humanReadableDate = now.toLocaleString("en-US", {
+        weekday: "long", // e.g., Monday
+        year: "numeric", // e.g., 2023
+        month: "long", // e.g., December
+        day: "numeric", // e.g., 25
+    });
+    return (0, exports.sendEmail)({
+        receiverEmail: adminEmail,
+        subject: "Customer Support",
+        emailTemplate: `<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delivery Update | Kingsway Logistics</title>
+
+    <style>
+
+        /* Global Reset */
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background-color: #f2f2f2;
+
+            color: #333;
+
+            line-height: 1.6;
+
+        }
+
+
+
+        .container {
+
+            max-width: 600px;
+
+            margin: 40px auto;
+
+            background-color: #fff;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+            height: auto;
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        .header {
+
+            text-align: center;
+
+            background-color: #FE6C16;
+
+            padding: 20px;
+
+            border-radius: 10px 10px 0 0;
+
+            color: #fff;
+
+        }
+
+
+
+        .header img {
+
+            width: 150px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .content {
+
+            padding: 20px;
+
+            color: #333;
+
+        }
+
+
+
+        .footer {
+
+            text-align: center;
+
+            background-color: #FE6C16;
+
+            padding: 10px;
+
+            border-radius: 0 0 10px 10px;
+
+            color: #fff;
+
+        }
+
+
+
+        h1, h2, h3 {
+
+            color: #333;
+
+        }
+
+
+
+        p {
+
+            font-size: 16px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+
+        .highlight {
+
+            font-weight: bold;
+
+            color: #FE6C16;
+
+        }
+
+
+
+        ul {
+
+            list-style: none;
+
+            margin: 20px 0;
+
+            padding: 0;
+
+            border: 1px solid #FE6C16;
+
+            border-radius: 8px;
+
+        }
+
+
+
+        li {
+
+            font-size: 16px;
+
+            padding: 12px 20px;
+
+            border-bottom: 1px solid #ddd;
+
+        }
+
+
+
+        li:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+
+        .button {
+
+            display: inline-block;
+
+            background-color: #FE6C16;
+
+            color: white;
+
+            padding: 12px 25px;
+
+            border-radius: 5px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+        }
+
+
+
+        .button:hover {
+
+            background-color: #e0561a;
+
+        }
+
+
+
+        /* Responsive Styles */
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                padding: 15px;
+
+            }
+
+
+
+            .header img {
+
+                width: 120px;
+
+            }
+
+
+
+            .footer {
+
+                font-size: 14px;
+
+            }
+
+
+
+            .button {
+
+                font-size: 14px;
+
+                padding: 10px 20px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <div class="container">
+
+        <div class="header">
+
+            <img src="${clientUrl}/images/kingswaylogo.svg">
+
+            <h1>Need a hand</h1>
+
+        </div>
+
+
+
+        <div class="content">
+
+            <p style="font-size: 24px; font-weight: bold;">${input.name}</p>
+
+            <p><strong>Date:</strong> ${humanReadableDate}</p>
+
+            <p style="font-size: 16px; line-height: 1.5"><span class="highlight">Description:</span> ${input.description}</p>
+
+
+
+            <div style="background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+
+                <ul>
+
+                    <li><span class="highlight">Name:</span> ${input.name}</li>
+
+                    <li><span class="highlight">Department:</span> ${input.departmentToEmail}</li>
+
+                    <li><span class="highlight">Email:</span> ${input.email}</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="footer">
+
+            <p>&copy; ${new Date().getFullYear()} Kingsway Logistics. All rights reserved.</p>
+
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>`,
+    });
+});
+exports.sendReachOutEmailToAdmin = sendReachOutEmailToAdmin;
 const sendMessageToParcelReceiver = (input) => __awaiter(void 0, void 0, void 0, function* () {
     return (0, exports.sendEmail)({
         receiverEmail: input.receiverEmail,
@@ -444,7 +769,7 @@ const sendMessageToParcelReceiver = (input) => __awaiter(void 0, void 0, void 0,
     </div>
 
     <div class="footer">
-      <p>&copy; 2024 Kingsway Logistics. All rights reserved.</p>
+      <p>&copy; ${new Date().getFullYear()} Kingsway Logistics. All rights reserved.</p>
     </div>
   </div>
 
@@ -651,7 +976,7 @@ const sendMessageToParcelSender = (input) => __awaiter(void 0, void 0, void 0, f
     </div>
 
     <div class="footer">
-      <p>&copy; 2024 Kingsway Logistics. All rights reserved.</p>
+      <p>&copy; ${new Date().getFullYear()} Kingsway Logistics. All rights reserved.</p>
     </div>
   </div>
 

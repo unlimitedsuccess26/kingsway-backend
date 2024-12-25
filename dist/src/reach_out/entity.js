@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
-const contactUsSchema = new Schema({
+const reachOutSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -14,7 +14,7 @@ const contactUsSchema = new Schema({
         type: String,
         required: true,
     },
-    issueType: {
+    departmentToEmail: {
         type: String,
         required: true,
     },
@@ -24,5 +24,5 @@ const contactUsSchema = new Schema({
     },
     createdAt: { type: Date, default: Date.now },
 });
-const ContactUs = mongoose_1.default.model("ContactUs", contactUsSchema);
-exports.default = ContactUs;
+const ReachOut = mongoose_1.default.model("ReachOut", reachOutSchema);
+exports.default = ReachOut;

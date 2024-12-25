@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-import { IContactUs } from "./interface";
+import { IReachOut } from "./interface";
 
 const Schema = mongoose.Schema;
 
-const contactUsSchema = new Schema({
+const reachOutSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -13,7 +13,7 @@ const contactUsSchema = new Schema({
     type: String,
     required: true,
   },
-  issueType: {
+  departmentToEmail: {
     type: String,
     required: true,
   },
@@ -24,6 +24,6 @@ const contactUsSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const ContactUs = mongoose.model<IContactUs>("ContactUs", contactUsSchema);
+const ReachOut = mongoose.model<IReachOut>("ReachOut", reachOutSchema);
 
-export default ContactUs;
+export default ReachOut;
