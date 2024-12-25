@@ -10,6 +10,7 @@ import { MessageResponse } from "./src/utils/enum";
 import { ContactUsRouter } from "./src/contact_us/router";
 import { ParcelRouter } from "./src/parcel/router";
 import { AdminRouter } from "./src/admin/router";
+import { ReachOutRouter } from "./src/reach_out/router";
 
 const app: Express = express();
 
@@ -50,8 +51,8 @@ const StartServer = () => {
     "/api/v1",
     ContactUsRouter,
     ParcelRouter,
-    AdminRouter
-   
+    AdminRouter,
+    ReachOutRouter   
   );
 
   // Health check
