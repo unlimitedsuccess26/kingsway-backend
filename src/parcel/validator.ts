@@ -172,7 +172,10 @@ class ParcelValidator {
         "string.base": "Last location must be text",
         "any.required": "Last location is required.",
       }),
-    
+      senderLocation: Joi.string().required().messages({
+        "string.base": "Sender location must be text",
+        "any.required": "Sender location is required.",
+      }),
       couriersMessage: Joi.string().required().messages({
         "string.base": "Couriers message must be text",
         "any.required": "Couriers message required.",
