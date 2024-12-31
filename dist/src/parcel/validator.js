@@ -29,6 +29,10 @@ class ParcelValidator {
                     "string.base": "Receiver name must be text",
                     "any.required": "Receiver name is required.",
                 }),
+                senderLocation: joi_1.default.string().required().messages({
+                    "string.base": "Sender location must be text",
+                    "any.required": "Sender location is required.",
+                }),
                 email: joi_1.default.string().email().required().messages({
                     "string.email": "Please enter a valid email address",
                     "any.required": "Email address is required",

@@ -9,7 +9,7 @@ export interface IParcel extends Document {
   arrivalDate: string;
   parcelWeight: string;
   parcelsDesignation: string;
-
+  senderLocation: string;
   orderId: string;
   status: string;
   createdAt: Date;
@@ -26,7 +26,7 @@ export interface IParcelUserInput {
   arrivalDate: string;
   parcelWeight: string;
   parcelsDesignation: string;
-
+  senderLocation: string;
   phoneNumber: string;
 
 }
@@ -48,12 +48,16 @@ export interface IParcelUpdateUserInput {
   freightType: string;
   phoneNumber: string;
   remainingDistanceInMiles: string;
+  senderLocation: string;
 }
 
 export interface IParcelSendEmail {
   receiverName: string;
   receiverEmail: string;
+  senderEmail: string;
   trackingId: string;
   phoneNumber: string;
   parcelsDesignation: string;
+  senderLocation: string;
+  isSender: boolean;
 }

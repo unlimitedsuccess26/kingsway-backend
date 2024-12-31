@@ -23,11 +23,16 @@ class CreateParcelController {
                 receiverName: parcel.receiverName,
                 phoneNumber: parcel.phoneNumber,
                 trackingId: parcel.orderId,
+                senderLocation: parcel.senderLocation,
+                receiverEmail: parcel.receiverEmail,
+                senderEmail: parcel.email,
             };
-            const parcelReceiver = Object.assign({ receiverEmail: parcel.receiverEmail }, commonType);
-            const parcelSender = Object.assign(Object.assign({}, commonType), { receiverEmail: parcel.email, receiverName: parcel.senderName });
-            (0, email_1.sendMessageToParcelReceiver)(parcelReceiver);
-            (0, email_1.sendMessageToParcelSender)(parcelSender);
+            const parcelReceiver = Object.assign(Object.assign({}, commonType), { isSender: false });
+            const parcelSender = Object.assign(Object.assign({}, commonType), { isSender: true });
+            // sendMessageToParcelReceiver(parcelReceiver);
+            // sendMessageToParcelSender(parcelSender);
+            (0, email_1.sendMessageToParcelReceiverOrSender)(parcelReceiver);
+            (0, email_1.sendMessageToParcelReceiverOrSender)(parcelSender);
             return res.status(201).json({
                 message: enum_1.MessageResponse.Success,
                 description: "Parcel created successfully!",

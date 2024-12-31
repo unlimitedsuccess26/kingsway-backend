@@ -21,15 +21,15 @@ export const sendEmail = async (input: ISendEmail) => {
     host: "smtp.zeptomail.com",
     port: 587,
     auth: {
-      user: "emailapikey",
-      pass: "wSsVR6108hL2Da94yjSqdrtrkQxSBlukHUwoiwH0vnH5TajG98c8lUefV1P1GaBMQjY9QGNBo+4qnksAhDFbj9wsy15VCSiF9mqRe1U4J3x17qnvhDzIVmlbkBqJJYMNwAxqm2BoGswq+g==",
+      user: smtpSender,
+      pass: smtpPassword,
     },
   });
 
   var mailOptions = {
-    from: '"Kingsway Team" <support@kingswaycompany.com>',
+    from: `"Kingsway Team" <${smtpEmailFrom}>`,
     to: input.receiverEmail,
-    replyTo: "support@kingswaycompany.com",
+    replyTo: smtpEmailFrom,
     subject: input.subject,
     html: input.emailTemplate,
   };
@@ -216,7 +216,7 @@ export const sendContactUsEmailToAdmin = async (input: IContactUsUserInput) => {
 
     <div class="container">
         <div class="header">
-            <img src="${clientUrl}/images/kingswaylogo.svg" alt="Kingsway Logistics Logo">
+            <img src="${clientUrl}/images/kingsway.png" alt="Kingsway Logistics Logo">
             <h1>Delivery Update</h1>
         </div>
 
@@ -525,7 +525,7 @@ export const sendReachOutEmailToAdmin = async (input: IReachOutUserInput) => {
 
         <div class="header">
 
-            <img src="${clientUrl}/images/kingswaylogo.svg">
+            <img src="${clientUrl}/images/kingsway.png">
 
             <h1>Need a hand</h1>
 
@@ -583,16 +583,23 @@ export const sendReachOutEmailToAdmin = async (input: IReachOutUserInput) => {
   });
 };
 
-export const sendMessageToParcelReceiver = async (input: IParcelSendEmail) => {
+export const sendMessageToParcelReceiverOrSender = async (input: IParcelSendEmail) => {
+  const now = new Date();
+  const humanReadableDate = now.toLocaleString("en-US", {
+    weekday: "long", // e.g., Monday
+    year: "numeric", // e.g., 2023
+    month: "long", // e.g., December
+    day: "numeric", // e.g., 25
+  });
   return sendEmail({
-    receiverEmail: input.receiverEmail,
+    receiverEmail: input.isSender ? input.senderEmail : input.receiverEmail,
     subject: "Customer Support",
     emailTemplate: `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parcel Information | Kingsway Logistics</title>
+  <title>Delivery Update | Kingsway Logistics</title>
   <style>
     /* Global Reset */
     * {
@@ -744,46 +751,43 @@ export const sendMessageToParcelReceiver = async (input: IParcelSendEmail) => {
 
   <div class="container">
     <div class="header">
-      <img src="${clientUrl}/images/kingswaylogo.svg" alt="Kingsway Logistics Logo">
+      <img src="${clientUrl}/images/kingswaylogo.png" alt="Kingsway Logistics Logo">
       <h1>Delivery Update</h1>
     </div>
 
     <div class="content">
-      <p>Dear Kelvin,</p>
-      <p><strong>Date:</strong> 11-12-2024 10:00:04</p>
-      <p><strong>Deposit Delivery Information:</strong> From United Kingdom to 1173 Limer Street, Australia.</p>
+      <p>Dear ${input.receiverName},</p>
+      <p><strong>Date:</strong> ${humanReadableDate}</p>
+      <p><strong>Deposit Delivery Information:</strong> From ${input.senderLocation} to ${input.parcelsDesignation}.</p>
 
       <p>Click on the link or copy the tracking ID below to track your parcel:</p>
 
       <ul>
-        <li><a href="${clientUrl}/trackingdetail.html#${
-      input.trackingId
-    }" class="tracking-link">Track Your Parcel</a></li>
+        <li><a href="" class="tracking-link">Track Your Parcel</a></li>
         <li><span class="highlight">Tracking ID:</span> ${input.trackingId}</li>
       </ul>
-
       <div class="identity-card-info">
-        <p>We hope this message finds you well. To proceed with the delivery of your package, we kindly request that you reconfirm your delivery details:</p>
+        <p>we received a freight deposit in your name. To proceed with the delivery of your package, we kindly request that you reconfirm your delivery details:</p>
         <p><strong>Below are your details to reconfirm:</strong></p>
 
         <ul class="details-list">
           <li><span>Name:</span> ${input.receiverName}</li>
           <li><span>Address:</span> ${input.parcelsDesignation}</li>
           <li><span>Email:</span> ${input.receiverEmail}</li>
-          <li><span>Phone number:</span> ${input.phoneNumber}</li>
+          <li><span>Phone Number:</span> ${input.phoneNumber}</li>
         </ul>
 
         <p>Please send us a clear picture of a valid government-issued identity card to verify your identity and ensure a smooth delivery process.</p>
         <p>Thank you for your cooperation. We look forward to your prompt response.</p>
 
-   
+        <a href="#" class="button">Reconfirm Details</a>
 
         <p><strong>Best regards,</strong><br> Kingsway Logistics</p>
       </div>
     </div>
 
     <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Kingsway Logistics. All rights reserved.</p>
+      <p>&copy; 2024 Kingsway Logistics. All rights reserved.</p>
     </div>
   </div>
 
@@ -953,7 +957,7 @@ export const sendMessageToParcelSender = async (input: IParcelSendEmail) => {
 
   <div class="container">
     <div class="header">
-      <img src="${clientUrl}/images/kingswaylogo.svg" alt="Kingsway Logistics Logo">
+      <img src="${clientUrl}/images/kingsway.png" alt="Kingsway Logistics Logo">
       <h1>Delivery Update</h1>
     </div>
 

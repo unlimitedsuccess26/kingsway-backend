@@ -41,7 +41,11 @@ const StartServer = () => {
   // Cors
   app.use(
     cors({
-      origin: "*",
+      origin: [
+        "https://kingswaycompany.com",
+        "https://kingways-logistics.vercel.app",
+        "http://127.0.0.1:5500",
+      ],
       credentials: true,
     })
   );
@@ -52,7 +56,7 @@ const StartServer = () => {
     ContactUsRouter,
     ParcelRouter,
     AdminRouter,
-    ReachOutRouter   
+    ReachOutRouter
   );
 
   // Health check

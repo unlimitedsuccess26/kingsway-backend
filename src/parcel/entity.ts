@@ -46,6 +46,10 @@ const parcelSchema = new Schema({
     type: String,
     default: "",
   },
+  senderLocation: {
+    type: String,
+    required: true,
+  },
   couriersMessage: {
     type: String,
     default: "",
