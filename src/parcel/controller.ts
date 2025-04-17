@@ -8,7 +8,7 @@ import {
   IParcelUserInput,
 } from "./interface";
 import { parcelService } from "./service";
-import { sendMessageToParcelReceiverOrSender, sendMessageToParcelSender } from "../utils/email";
+import { sendMessageToParcelReceiverOrSender } from "../utils/email";
 
 class CreateParcelController {
   public async createParcel(req: Request, res: Response) {

@@ -16,7 +16,7 @@ const app: Express = express();
 
 dotenv.config();
 
-const port = process.env.PORT || 8080;
+const port = 8080;
 
 const StartServer = () => {
   app.use((req: Request, res: Response, next: NextFunction) => {
@@ -41,11 +41,12 @@ const StartServer = () => {
   // Cors
   app.use(
     cors({
-      origin: [
-        "https://kingswaycompany.com",
-        "https://kingways-logistics.vercel.app",
-        "http://127.0.0.1:5500",
-      ],
+      origin: "*",
+      // [
+      //   "https://kingswaycompany.com",
+      //   "https://kingways-logistics.vercel.app",
+      //   "http://127.0.0.1:5500",
+      // ],
       credentials: true,
     })
   );
