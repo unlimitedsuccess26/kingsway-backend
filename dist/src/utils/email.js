@@ -23,28 +23,39 @@ const smtpEmailFrom = process.env.EMAILFROM;
 const clientUrl = process.env.CLIENT_URL;
 const adminEmail = (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
 dotenv_1.default.config();
-const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
-    var transport = nodemailer_1.default.createTransport({
+const sendEmail = async (input) => {
+    const transport = nodemailer.createTransport({
         host: "smtp.zeptomail.com",
         port: 587,
+        secure: false, // true for port 465
         auth: {
             user: smtpSender,
             pass: smtpPassword,
         },
+        tls: {
+            rejectUnauthorized: false, // helps in serverless environments
+        },
     });
-    var mailOptions = {
+
+    const mailOptions = {
         from: `"Kingsway Team" <${smtpEmailFrom}>`,
         to: input.receiverEmail,
         replyTo: smtpEmailFrom,
         subject: input.subject,
         html: input.emailTemplate,
     };
-    transport.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log("Successfully sent");
-    });
+
+    // ✅ Replace callback with await
+    try {
+        const info = await transport.sendMail(mailOptions);
+        console.log("Email sent:", info.response);
+        return info;
+    } catch (error) {
+        console.error("Email sending failed:", error);
+        throw error; // optional: let the caller handle it
+    }
+};
+
     // try {
     //   // const transporter = nodemailer.createTransport({
     //   //   host: 'smtp-relay.sendinblue.com',
