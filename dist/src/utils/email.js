@@ -53,7 +53,7 @@ const sendEmail = async (input) => {
     } catch (error) {
         console.error("Email sending failed:", error);
         throw error; // optional: let the caller handle it
-    
+	
 };
 
     // try {
@@ -91,7 +91,7 @@ const sendEmail = async (input) => {
     //   console.error("Email sending error:", error);
     //   // throw error;
     // }
-});
+};
 exports.sendEmail = sendEmail;
 const sendContactUsEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, function* () {
     return (0, exports.sendEmail)({
