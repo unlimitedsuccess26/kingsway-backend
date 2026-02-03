@@ -53,7 +53,7 @@ const sendEmail = async (input) => {
     } catch (error) {
         console.error("Email sending failed:", error);
         throw error; // optional: let the caller handle it
-    }
+    
 };
 
     // try {
