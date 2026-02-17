@@ -35,6 +35,9 @@ export const sendEmail = async (input: ISendEmail) => {
     html: input.emailTemplate,
   };
 
+	await transport.verify();
+console.log("SMTP connection ready");
+
   try {
     const info = await transport.sendMail(mailOptions);
     console.log("Email sent:", info.messageId);
