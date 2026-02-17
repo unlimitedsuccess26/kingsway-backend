@@ -19,14 +19,15 @@ dotenv.config();
 export const sendEmail = async (input: ISendEmail) => {
   var transport = nodemailer.createTransport({
     host: "smtp.zeptomail.com",
-    port: 587,
+    port: 465,
+    secure: true,
     auth: {
       user: smtpSender,
       pass: smtpPassword,
     },
   });
 
-  var mailOptions = {
+  const mailOptions = {
     from: `"Kingsway Team" <${smtpEmailFrom}>`,
     to: input.receiverEmail,
     replyTo: smtpEmailFrom,
@@ -34,12 +35,12 @@ export const sendEmail = async (input: ISendEmail) => {
     html: input.emailTemplate,
   };
 
-  transport.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return console.log(error);
-    }
-    console.log("Successfully sent");
-  });
+  try {
+    const info = await transport.sendMail(mailOptions);
+    console.log("Email sent:", info.messageId);
+  } catch (error) {
+    console.error("Email error:", error);
+  }
   // try {
   //   // const transporter = nodemailer.createTransport({
   //   //   host: 'smtp-relay.sendinblue.com',
