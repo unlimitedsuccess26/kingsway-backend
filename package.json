@@ -27,7 +27,7 @@
         "joi": "^17.13.0",
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.3.2",
-        "nodemailer": "^6.9.13",
+        "nodemailer": "^6.10.1",
         "socket.io": "^4.7.5",
         "wordnik": "^0.0.2"
     },
@@ -38,7 +38,7 @@
         "@types/jsonwebtoken": "^9.0.6",
         "@types/mongoose": "^5.11.97",
         "@types/node": "^20.12.7",
-        "@types/nodemailer": "^6.4.15",
+        "@types/nodemailer": "^6.4.22",
         "nodemon": "^3.1.0",
         "ts-node": "^10.9.2",
         "typescript": "^5.4.5"
