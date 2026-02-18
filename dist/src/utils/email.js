@@ -19,11 +19,23 @@ export const sendEmail = async (input) => {
       throw new Error("Missing ZeptoMail environment variables");
     }
 
+    if (!API_URL)
+      throw new Error("Missing EMAIL_API_ENDPOINT environment variable");
     const response = await axios.post(
       API_URL,
       {
-        from: { address: FROM_EMAIL, name: "Kingsway Team" },
-        to: [{ email_address: { address: input.receiverEmail, name: input.receiverName || "" } }],
+        from: {
+          address: FROM_EMAIL,
+          name: "Kingsway Team",
+        },
+        to: [
+          {
+            email_address: {
+              address: input.receiverEmail,
+              name: input.receiverName || "",
+            },
+          },
+        ],
         subject: input.subject,
         htmlbody: input.emailTemplate,
       },
@@ -32,13 +44,17 @@ export const sendEmail = async (input) => {
           Authorization: `Zoho-enczapikey ${ZEPTO_TOKEN}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     console.log("✅ Email sent via ZeptoMail API");
+
     return response.data;
   } catch (error) {
-    console.error("❌ ZeptoMail API error:", error.response?.data || error.message);
+    console.error(
+      "❌ ZeptoMail API error:",
+      error.response?.data || error.message,
+    );
     throw error;
   }
 };
@@ -81,7 +97,7 @@ export const sendContactUsEmailToAdmin = async (input) => {
         </div>
     </div>
 </body>
-</html>`
+</html>`,
   });
 };
 
@@ -131,7 +147,7 @@ export const sendReachOutEmailToAdmin = async (input) => {
       </div>
   </div>
 </body>
-</html>`
+</html>`,
   });
 };
 
@@ -193,6 +209,6 @@ export const sendMessageToParcelReceiverOrSender = async (input) => {
       </div>
   </div>
 </body>
-</html>`
+</html>`,
   });
 };
