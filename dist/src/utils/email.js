@@ -4,106 +4,54 @@ import axios from "axios";
 
 dotenv.config();
 
-var __awaiter =
-  (this && this.__awaiter) ||
-  function (thisArg, _arguments, P, generator) {
-    function adopt(value) {
-      return value instanceof P
-        ? value
-        : new P(function (resolve) {
-            resolve(value);
-          });
-    }
-    return new (P || (P = Promise))(function (resolve, reject) {
-      function fulfilled(value) {
-        try {
-          step(generator.next(value));
-        } catch (e) {
-          reject(e);
-        }
-      }
-      function rejected(value) {
-        try {
-          step(generator["throw"](value));
-        } catch (e) {
-          reject(e);
-        }
-      }
-      function step(result) {
-        result.done
-          ? resolve(result.value)
-          : adopt(result.value).then(fulfilled, rejected);
-      }
-      step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-  };
-
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
-
-var _a;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendMessageToParcelReceiverOrSender =
-  exports.sendReachOutEmailToAdmin =
-  exports.sendContactUsEmailToAdmin =
-  exports.sendEmail =
-    void 0;
-
 const smtpSender = process.env.EMAILSENDER;
 const smtpPassword = process.env.EMAILSENDERPASSWORD;
 const smtpEmailFrom = process.env.EMAILFROM;
 const clientUrl = process.env.CLIENT_URL;
-const adminEmail =
-  (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
+const adminEmail = process.env.ADMIN_EMAIL ?? "";
 
 // --------------------------------------------------
 // Core sendEmail function using Axios API
 // --------------------------------------------------
-const sendEmail = (input) =>
-  __awaiter(void 0, void 0, void 0, function* () {
-    try {
-      console.log("Sending email via API to:", input.receiverEmail);
+export const sendEmail = async (input) => {
+  try {
+    console.log("Sending email via API to:", input.receiverEmail);
 
-      // Example: sending via a backend email endpoint
-      // Adjust the URL and auth headers based on your email service
-      const response = yield axios.post(
-        process.env.EMAIL_API_ENDPOINT || "https://your-backend.com/send-email",
-        {
-          from: `"Kingsway Team" <${smtpEmailFrom}>`,
-          to: input.receiverEmail,
-          subject: input.subject,
-          html: input.emailTemplate,
+    const response = await axios.post(
+      process.env.EMAIL_API_ENDPOINT || "https://your-backend.com/send-email",
+      {
+        from: `"Kingsway Team" <${smtpEmailFrom}>`,
+        to: input.receiverEmail,
+        subject: input.subject,
+        html: input.emailTemplate,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.EMAIL_API_KEY || ""}`,
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.EMAIL_API_KEY || ""}`,
-          },
-        }
-      );
+      },
+    );
 
-      console.log("Email sent successfully:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Email sending error:", error.response?.data || error.message);
-      throw error;
-    }
-  });
-
-exports.sendEmail = sendEmail;
+    console.log("Email sent successfully:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Email sending error:",
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
 
 // --------------------------------------------------
 // Contact Us email to admin
 // --------------------------------------------------
-const sendContactUsEmailToAdmin = (input) =>
-  __awaiter(void 0, void 0, void 0, function* () {
-    return (0, exports.sendEmail)({
-      receiverEmail: adminEmail,
-      subject: "Customer Support",
-      emailTemplate: `<!DOCTYPE html>
+export const sendContactUsEmailToAdmin = async (input) => {
+  return sendEmail({
+    receiverEmail: adminEmail,
+    subject: "Customer Support",
+    emailTemplate: `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -137,28 +85,25 @@ const sendContactUsEmailToAdmin = (input) =>
 </div>
 </body>
 </html>`,
-    });
   });
-
-exports.sendContactUsEmailToAdmin = sendContactUsEmailToAdmin;
+};
 
 // --------------------------------------------------
 // Reach Out email to admin
 // --------------------------------------------------
-const sendReachOutEmailToAdmin = (input) =>
-  __awaiter(void 0, void 0, void 0, function* () {
-    const now = new Date();
-    const humanReadableDate = now.toLocaleString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+export const sendReachOutEmailToAdmin = async (input) => {
+  const now = new Date();
+  const humanReadableDate = now.toLocaleString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-    return (0, exports.sendEmail)({
-      receiverEmail: adminEmail,
-      subject: "Customer Support",
-      emailTemplate: `<!DOCTYPE html>
+  return sendEmail({
+    receiverEmail: adminEmail,
+    subject: "Customer Support",
+    emailTemplate: `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -192,28 +137,25 @@ const sendReachOutEmailToAdmin = (input) =>
 </div>
 </body>
 </html>`,
-    });
   });
-
-exports.sendReachOutEmailToAdmin = sendReachOutEmailToAdmin;
+};
 
 // --------------------------------------------------
 // Parcel email to sender/receiver
 // --------------------------------------------------
-const sendMessageToParcelReceiverOrSender = (input) =>
-  __awaiter(void 0, void 0, void 0, function* () {
-    const now = new Date();
-    const humanReadableDate = now.toLocaleString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+export const sendMessageToParcelReceiverOrSender = async (input) => {
+  const now = new Date();
+  const humanReadableDate = now.toLocaleString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-    return (0, exports.sendEmail)({
-      receiverEmail: input.isSender ? input.senderEmail : input.receiverEmail,
-      subject: "Customer Support",
-      emailTemplate: `<!DOCTYPE html>
+  return sendEmail({
+    receiverEmail: input.isSender ? input.senderEmail : input.receiverEmail,
+    subject: "Customer Support",
+    emailTemplate: `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -239,7 +181,7 @@ const sendMessageToParcelReceiverOrSender = (input) =>
           <li><span class="highlight">Tracking ID:</span> ${input.trackingId}</li>
       </ul>
       <div class="identity-card-info">
-          <p>we received a freight deposit in your name. To proceed with the delivery of your package, we kindly request that you reconfirm your delivery details:</p>
+          <p>We received a freight deposit in your name. To proceed with the delivery of your package, we kindly request that you reconfirm your delivery details:</p>
           <ul class="details-list">
               <li><span>Name:</span> ${input.receiverName}</li>
               <li><span>Address:</span> ${input.parcelsDesignation}</li>
@@ -256,7 +198,5 @@ const sendMessageToParcelReceiverOrSender = (input) =>
 </div>
 </body>
 </html>`,
-    });
   });
-
-exports.sendMessageToParcelReceiverOrSender = sendMessageToParcelReceiverOrSender;
+};
