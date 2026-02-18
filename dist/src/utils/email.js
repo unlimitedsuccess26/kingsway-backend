@@ -1,128 +1,83 @@
 "use strict";
-var __awaiter =
-  (this && this.__awaiter) ||
-  function (thisArg, _arguments, P, generator) {
-    function adopt(value) {
-      return value instanceof P
-        ? value
-        : new P(function (resolve) {
-            resolve(value);
-          });
-    }
+
+import axios from "axios";
+const ZEPTO_TOKEN = process.env.ZEPTO_API_KEY;
+const FROM_EMAIL = process.env.EMAILFROM;
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
-      function fulfilled(value) {
-        try {
-          step(generator.next(value));
-        } catch (e) {
-          reject(e);
-        }
-      }
-      function rejected(value) {
-        try {
-          step(generator["throw"](value));
-        } catch (e) {
-          reject(e);
-        }
-      }
-      function step(result) {
-        result.done
-          ? resolve(result.value)
-          : adopt(result.value).then(fulfilled, rejected);
-      }
-      step((generator = generator.apply(thisArg, _arguments || [])).next());
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
-  };
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendMessageToParcelReceiverOrSender =
-  exports.sendReachOutEmailToAdmin =
-  exports.sendContactUsEmailToAdmin =
-  exports.sendEmail =
-    void 0;
+exports.sendMessageToParcelReceiverOrSender = exports.sendReachOutEmailToAdmin = exports.sendContactUsEmailToAdmin = exports.sendEmail = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
 dotenv_1.default.config();
-const smtpSender = process.env.EMAILSENDER;
-const smtpPassword = process.env.EMAILSENDERPASSWORD;
-const smtpEmailFrom = process.env.EMAILFROM;
+// const smtpSender = process.env.EMAILSENDER;
+// const smtpPassword = process.env.EMAILSENDERPASSWORD;
+// const smtpEmailFrom = process.env.EMAILFROM;
 const clientUrl = process.env.CLIENT_URL;
-const adminEmail =
-  (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
+const API_URL = process.env.EMAIL_API_ENDPOINT;
+const adminEmail = (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
 dotenv_1.default.config();
-const sendEmail = (input) =>
-  __awaiter(void 0, void 0, void 0, function* () {
-    var transport = nodemailer_1.default.createTransport({
-      host: "smtp.zeptomail.com",
-      port: 587,
-      secure: false, // use TLS
-      auth: {
-        user: smtpSender,
-        pass: smtpPassword,
-      },
-    });
-    const mailOptions = {
-      from: `"Kingsway Team" <${smtpEmailFrom}>`,
-      to: input.receiverEmail,
-      replyTo: smtpEmailFrom,
-      subject: input.subject,
-      html: input.emailTemplate,
-    };
-    try {
-      yield transport.verify();
-      console.log("SMTP connection ready");
-      const info = yield transport.sendMail(mailOptions);
-      console.log("Email sent:", info.messageId);
-    } catch (error) {
-      console.error("Email error:", error);
+export const sendEmail = async (input) => {
+  try {
+    if (!ZEPTO_TOKEN || !FROM_EMAIL) {
+      throw new Error("Missing ZeptoMail environment variables");
     }
-    // try {
-    //   // const transporter = nodemailer.createTransport({
-    //   //   host: 'smtp-relay.sendinblue.com',
-    //   //   port: 587,
-    //   //   secure: false,
-    //   //   auth: {
-    //   //     user: smtpSender,
-    //   //     pass: smtpPassword,
-    //   //   },
-    //   // });
-    //   // const mailOptions = {
-    //   //   from: `Kingsway <${smtpEmailFrom}>`,
-    //   //   to: input.receiverEmail,
-    //   //   subject: input.subject,
-    //   //   html: input.emailTemplate,
-    //   // };
-    //   const transporter = nodemailer.createTransport({
-    //     service: "gmail",
-    //     auth: {
-    //       user: smtpSender,
-    //       pass: smtpPassword,
-    //     },
-    //   });
-    //   const mailOptions = {
-    //     from: `Kingsway <${smtpEmailFrom}>`,
-    //     to: input.receiverEmail,
-    //     subject: input.subject,
-    //     html: input.emailTemplate,
-    //   };
-    //   const info = await transporter.sendMail(mailOptions);
-    //   return info.response;
-    // } catch (error) {
-    //   console.error("Email sending error:", error);
-    //   // throw error;
-    // }
-  });
+
+    const response = await axios.post(
+      API_URL,
+      {
+        from: {
+          address: FROM_EMAIL,
+          name: "Kingsway Team",
+        },
+        to: [
+          {
+            email_address: {
+              address: input.receiverEmail,
+              name: input.receiverName || "",
+            },
+          },
+        ],
+        subject: input.subject,
+        htmlbody: input.emailTemplate,
+      },
+      {
+        headers: {
+          Authorization: `Zoho-enczapikey ${ZEPTO_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("✅ Email sent via ZeptoMail API");
+
+    return response.data;
+  } catch (error) {
+    console.error(
+      "❌ ZeptoMail API error:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
 exports.sendEmail = sendEmail;
-const sendContactUsEmailToAdmin = (input) =>
-  __awaiter(void 0, void 0, void 0, function* () {
+const sendContactUsEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, function* () {
     return (0, exports.sendEmail)({
-      receiverEmail: adminEmail,
-      subject: "Customer Support",
-      emailTemplate: `<!DOCTYPE html>
+        receiverEmail: adminEmail,
+        subject: "Customer Support",
+        emailTemplate: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -280,21 +235,20 @@ const sendContactUsEmailToAdmin = (input) =>
 </html>
 	`,
     });
-  });
+});
 exports.sendContactUsEmailToAdmin = sendContactUsEmailToAdmin;
-const sendReachOutEmailToAdmin = (input) =>
-  __awaiter(void 0, void 0, void 0, function* () {
+const sendReachOutEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, function* () {
     const now = new Date();
     const humanReadableDate = now.toLocaleString("en-US", {
-      weekday: "long", // e.g., Monday
-      year: "numeric", // e.g., 2023
-      month: "long", // e.g., December
-      day: "numeric", // e.g., 25
+        weekday: "long", // e.g., Monday
+        year: "numeric", // e.g., 2023
+        month: "long", // e.g., December
+        day: "numeric", // e.g., 25
     });
     return (0, exports.sendEmail)({
-      receiverEmail: adminEmail,
-      subject: "Customer Support",
-      emailTemplate: `<!DOCTYPE html>
+        receiverEmail: adminEmail,
+        subject: "Customer Support",
+        emailTemplate: `<!DOCTYPE html>
 
 <html lang="en">
 
@@ -606,21 +560,20 @@ const sendReachOutEmailToAdmin = (input) =>
 
 </html>`,
     });
-  });
+});
 exports.sendReachOutEmailToAdmin = sendReachOutEmailToAdmin;
-const sendMessageToParcelReceiverOrSender = (input) =>
-  __awaiter(void 0, void 0, void 0, function* () {
+const sendMessageToParcelReceiverOrSender = (input) => __awaiter(void 0, void 0, void 0, function* () {
     const now = new Date();
     const humanReadableDate = now.toLocaleString("en-US", {
-      weekday: "long", // e.g., Monday
-      year: "numeric", // e.g., 2023
-      month: "long", // e.g., December
-      day: "numeric", // e.g., 25
+        weekday: "long", // e.g., Monday
+        year: "numeric", // e.g., 2023
+        month: "long", // e.g., December
+        day: "numeric", // e.g., 25
     });
     return (0, exports.sendEmail)({
-      receiverEmail: input.isSender ? input.senderEmail : input.receiverEmail,
-      subject: "Customer Support",
-      emailTemplate: `<!DOCTYPE html>
+        receiverEmail: input.isSender ? input.senderEmail : input.receiverEmail,
+        subject: "Customer Support",
+        emailTemplate: `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -820,6 +773,5 @@ const sendMessageToParcelReceiverOrSender = (input) =>
 </body>
 </html>`,
     });
-  });
-exports.sendMessageToParcelReceiverOrSender =
-  sendMessageToParcelReceiverOrSender;
+});
+exports.sendMessageToParcelReceiverOrSender = sendMessageToParcelReceiverOrSender;
