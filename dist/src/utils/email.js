@@ -18,7 +18,7 @@ export const sendEmail = async (input) => {
     console.log("Sending email via API to:", input.receiverEmail);
 
     const response = await axios.post(
-      process.env.EMAIL_API_ENDPOINT || "https://your-backend.com/send-email",
+      process.env.EMAIL_API_ENDPOINT || "https://kingsway-backend-1.onrender.com/send-email",
       {
         from: `"Kingsway Team" <${smtpEmailFrom}>`,
         to: input.receiverEmail,
