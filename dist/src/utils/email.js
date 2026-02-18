@@ -56,8 +56,7 @@ const adminEmail =
 dotenv_1.default.config();
 const sendEmail = (input) =>
   __awaiter(void 0, void 0, void 0, function* () {
-    console.log("SMTP USER:", smtpSender);
-    console.log("SMTP PASS:", smtpPassword ? "Loaded" : "Missing");
+    
     var transport = nodemailer_1.default.createTransport({
       host: "smtp.zeptomail.com",
       port: 465,
