@@ -16,7 +16,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendMessageToParcelReceiverOrSender = exports.sendReachOutEmailToAdmin = exports.sendContactUsEmailToAdmin = exports.sendEmail = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
-const axios_1 = __importDefault(require("axios"));
 dotenv_1.default.config();
 const smtpSender = process.env.EMAILSENDER;
 const smtpPassword = process.env.EMAILSENDERPASSWORD;
@@ -25,35 +24,62 @@ const clientUrl = process.env.CLIENT_URL;
 const adminEmail = (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
 dotenv_1.default.config();
 const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const url = process.env.EMAIL_API_ENDPOINT;
-        const zeptoKey = process.env.ZEPTO_API_KEY;
-        const emailFrom = process.env.EMAILFROM;
-        
-        if (!url || !zeptoKey || !emailFrom) {
-            console.error("Missing email configuration");
-            console.error({ url, zeptoKey: !!zeptoKey, emailFrom });
-            return;
+    var transport = nodemailer_1.default.createTransport({
+        host: "smtp.zeptomail.com",
+        port: 587,
+        auth: {
+            user: smtpSender,
+            pass: smtpPassword,
+        },
+    });
+    var mailOptions = {
+        from: `"Kingsway Team" <${smtpEmailFrom}>`,
+        to: input.receiverEmail,
+        replyTo: smtpEmailFrom,
+        subject: input.subject,
+        html: input.emailTemplate,
+    };
+    transport.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
         }
-
-        const data = {
-            from: { address: emailFrom, name: "Kingsway Team" },
-            to: [{ email_address: { address: input.receiverEmail, name: input.receiverName || "" } }],
-            subject: input.subject,
-            htmlbody: input.emailTemplate
-        };
-        
-        const response = yield axios_1.default.post(url, data, {
-            headers: {
-                Authorization: `Zoho-enczapikey ${zeptoKey}`,
-                "Content-Type": "application/json"
-            }
-        });
-        console.log("Successfully sent via ZeptoMail");
-    } catch (e) {
-        var _b;
-        console.error("Email sending via ZeptoMail failed:", ((_b = e.response) === null || _b === void 0 ? void 0 : _b.data) || e.message);
-    }
+        console.log("Successfully sent");
+    });
+    // try {
+    //   // const transporter = nodemailer.createTransport({
+    //   //   host: 'smtp-relay.sendinblue.com',
+    //   //   port: 587,
+    //   //   secure: false,
+    //   //   auth: {
+    //   //     user: smtpSender,
+    //   //     pass: smtpPassword,
+    //   //   },
+    //   // });
+    //   // const mailOptions = {
+    //   //   from: `Kingsway <${smtpEmailFrom}>`,
+    //   //   to: input.receiverEmail,
+    //   //   subject: input.subject,
+    //   //   html: input.emailTemplate,
+    //   // };
+    //   const transporter = nodemailer.createTransport({
+    //     service: "gmail",
+    //     auth: {
+    //       user: smtpSender,
+    //       pass: smtpPassword,
+    //     },
+    //   });
+    //   const mailOptions = {
+    //     from: `Kingsway <${smtpEmailFrom}>`,
+    //     to: input.receiverEmail,
+    //     subject: input.subject,
+    //     html: input.emailTemplate,
+    //   };
+    //   const info = await transporter.sendMail(mailOptions);
+    //   return info.response;
+    // } catch (error) {
+    //   console.error("Email sending error:", error);
+    //   // throw error;
+    // }
 });
 exports.sendEmail = sendEmail;
 const sendContactUsEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, function* () {
