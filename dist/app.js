@@ -15,7 +15,7 @@ const router_3 = require("./src/admin/router");
 const router_4 = require("./src/reach_out/router");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
-const port = 8080;
+const port = process.env.PORT || 8080;
 const StartServer = () => {
     app.use((req, res, next) => {
         loggin_1.default.info(`Incoming ==> Method : [${req.method}] - IP: [${req.socket.remoteAddress}]`);
@@ -29,12 +29,11 @@ const StartServer = () => {
     app.use(express_1.default.urlencoded({ extended: true }));
     // Cors
     app.use((0, cors_1.default)({
-        origin: "*",
-        // [
-        //   "https://kingswaycompany.com",
-        //   "https://kingways-logistics.vercel.app",
-        //   "http://127.0.0.1:5500",
-        // ],
+        origin: [
+            "https://kingswaycompany.com",
+            "https://kingways-logistics.vercel.app",
+            "http://127.0.0.1:5500",
+        ],
         credentials: true,
     }));
     // Routes

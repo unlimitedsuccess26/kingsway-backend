@@ -1,70 +1,66 @@
 "use strict";
-
-import axios from "axios";
-import dotenv from "dotenv";
-import nodemailer from "nodemailer";
-
-dotenv.config();
-
-const ZEPTO_TOKEN = process.env.ZEPTO_API_KEY;
-const FROM_EMAIL = process.env.EMAILFROM;
-const clientUrl = process.env.CLIENT_URL;
-const API_URL = process.env.EMAIL_API_ENDPOINT;
-const adminEmail = process.env.ADMIN_EMAIL ?? "";
-
-// sendEmail function
-export const sendEmail = async (input) => {
-  try {
-    if (!ZEPTO_TOKEN || !FROM_EMAIL) {
-      throw new Error("Missing ZeptoMail environment variables");
-    }
-
-    if (!API_URL)
-      throw new Error("Missing EMAIL_API_ENDPOINT environment variable");
-    const response = await axios.post(
-      API_URL,
-      {
-        from: {
-          address: FROM_EMAIL,
-          name: "Kingsway Team",
-        },
-        to: [
-          {
-            email_address: {
-              address: input.receiverEmail,
-              name: input.receiverName || "",
-            },
-          },
-        ],
-        subject: input.subject,
-        htmlbody: input.emailTemplate,
-      },
-      {
-        headers: {
-          Authorization: `Zoho-enczapikey ${ZEPTO_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-      },
-    );
-
-    console.log("✅ Email sent via ZeptoMail API");
-
-    return response.data;
-  } catch (error) {
-    console.error(
-      "❌ ZeptoMail API error:",
-      error.response?.data || error.message,
-    );
-    throw error;
-  }
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendMessageToParcelReceiverOrSender = exports.sendReachOutEmailToAdmin = exports.sendContactUsEmailToAdmin = exports.sendEmail = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const axios_1 = __importDefault(require("axios"));
+dotenv_1.default.config();
+const smtpSender = process.env.EMAILSENDER;
+const smtpPassword = process.env.EMAILSENDERPASSWORD;
+const smtpEmailFrom = process.env.EMAILFROM;
+const clientUrl = process.env.CLIENT_URL;
+const adminEmail = (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
+dotenv_1.default.config();
+const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const url = process.env.EMAIL_API_ENDPOINT;
+        const zeptoKey = process.env.ZEPTO_API_KEY;
+        const emailFrom = process.env.EMAILFROM;
+        
+        if (!url || !zeptoKey || !emailFrom) {
+            console.error("Missing email configuration");
+            console.error({ url, zeptoKey: !!zeptoKey, emailFrom });
+            return;
+        }
 
-// sendContactUsEmailToAdmin
-export const sendContactUsEmailToAdmin = async (input) => {
-  return sendEmail({
-    receiverEmail: adminEmail,
-    subject: "Customer Support",
-      emailTemplate: `<!DOCTYPE html>
+        const data = {
+            from: { address: emailFrom, name: "Kingsway Team" },
+            to: [{ email_address: { address: input.receiverEmail, name: input.receiverName || "" } }],
+            subject: input.subject,
+            htmlbody: input.emailTemplate
+        };
+        
+        const response = yield axios_1.default.post(url, data, {
+            headers: {
+                Authorization: `Zoho-enczapikey ${zeptoKey}`,
+                "Content-Type": "application/json"
+            }
+        });
+        console.log("Successfully sent via ZeptoMail");
+    } catch (e) {
+        var _b;
+        console.error("Email sending via ZeptoMail failed:", ((_b = e.response) === null || _b === void 0 ? void 0 : _b.data) || e.message);
+    }
+});
+exports.sendEmail = sendEmail;
+const sendContactUsEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    return (0, exports.sendEmail)({
+        receiverEmail: adminEmail,
+        subject: "Customer Support",
+        emailTemplate: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -201,7 +197,7 @@ export const sendContactUsEmailToAdmin = async (input) => {
 
         <div class="content">
             <p style="font-size: 24px; font-weight: bold;">${input.name}</p>
-            <p><strong>Date:</strong> ${humanReadableDate}</p>
+            <p><strong>Date:</strong> 11-12-2024 10:00:04</p>
             <p style="font-size: 16px; line-height: 1.5"><span class="highlight">Description:</span> ${input.description}</p>
 
             <div style="background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
@@ -222,21 +218,19 @@ export const sendContactUsEmailToAdmin = async (input) => {
 </html>
 	`,
     });
-};
-
-// sendReachOutEmailToAdmin
-export const sendReachOutEmailToAdmin = async (input) => {
-  const now = new Date();
-  const humanReadableDate = now.toLocaleString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  return sendEmail({
-    receiverEmail: adminEmail,
-    subject: "Customer Support",
+});
+exports.sendContactUsEmailToAdmin = sendContactUsEmailToAdmin;
+const sendReachOutEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    const now = new Date();
+    const humanReadableDate = now.toLocaleString("en-US", {
+        weekday: "long", // e.g., Monday
+        year: "numeric", // e.g., 2023
+        month: "long", // e.g., December
+        day: "numeric", // e.g., 25
+    });
+    return (0, exports.sendEmail)({
+        receiverEmail: adminEmail,
+        subject: "Customer Support",
         emailTemplate: `<!DOCTYPE html>
 
 <html lang="en">
@@ -549,22 +543,20 @@ export const sendReachOutEmailToAdmin = async (input) => {
 
 </html>`,
     });
-};
-
-// sendMessageToParcelReceiverOrSender
-export const sendMessageToParcelReceiverOrSender = async (input) => {
-  const now = new Date();
-  const humanReadableDate = now.toLocaleString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  return sendEmail({
-    receiverEmail: input.isSender ? input.senderEmail : input.receiverEmail,
-    subject: "Customer Support",
-         emailTemplate: `<!DOCTYPE html>
+});
+exports.sendReachOutEmailToAdmin = sendReachOutEmailToAdmin;
+const sendMessageToParcelReceiverOrSender = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    const now = new Date();
+    const humanReadableDate = now.toLocaleString("en-US", {
+        weekday: "long", // e.g., Monday
+        year: "numeric", // e.g., 2023
+        month: "long", // e.g., December
+        day: "numeric", // e.g., 25
+    });
+    return (0, exports.sendEmail)({
+        receiverEmail: input.isSender ? input.senderEmail : input.receiverEmail,
+        subject: "Customer Support",
+        emailTemplate: `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -757,11 +749,12 @@ export const sendMessageToParcelReceiverOrSender = async (input) => {
     </div>
 
     <div class="footer">
-       <p>&copy; ${new Date().getFullYear()} Kingsway Logistics. All rights reserved.</p>
+      <p>&copy; 2024 Kingsway Logistics. All rights reserved.</p>
     </div>
   </div>
 
 </body>
 </html>`,
     });
-};
+});
+exports.sendMessageToParcelReceiverOrSender = sendMessageToParcelReceiverOrSender;
