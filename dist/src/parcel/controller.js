@@ -26,6 +26,7 @@ class CreateParcelController {
                 senderLocation: parcel.senderLocation,
                 receiverEmail: parcel.receiverEmail,
                 senderEmail: parcel.email,
+                senderName: parcel.senderName,
             };
             const parcelReceiver = Object.assign(Object.assign({}, commonType), { isSender: false });
             const parcelSender = Object.assign(Object.assign({}, commonType), { isSender: true });

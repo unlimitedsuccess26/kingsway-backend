@@ -24,12 +24,15 @@ const clientUrl = process.env.CLIENT_URL;
 const adminEmail = (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
 dotenv_1.default.config();
 const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
-    var transport = nodemailer_1.default.createTransport({
+    if (!process.env.ZEPTO_API_KEY) {
+        console.error("ZEPTO_API_KEY is missing from environment variables.");
+    }
+    const transport = nodemailer_1.default.createTransport({
         host: "smtp.zeptomail.com",
         port: 587,
         auth: {
-            user: smtpSender,
-            pass: smtpPassword,
+            user: "emailapikey",
+            pass: process.env.ZEPTO_API_KEY || smtpPassword,
         },
     });
     var mailOptions = {
@@ -39,12 +42,13 @@ const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
         subject: input.subject,
         html: input.emailTemplate,
     };
-    transport.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log("Successfully sent");
-    });
+    try {
+        const info = yield transport.sendMail(mailOptions);
+        console.log("Successfully sent", info.messageId);
+        return info;
+    } catch (error) {
+        console.error("Email sending error:", error);
+    }
     // try {
     //   // const transporter = nodemailer.createTransport({
     //   //   host: 'smtp-relay.sendinblue.com',
@@ -581,7 +585,7 @@ const sendMessageToParcelReceiverOrSender = (input) => __awaiter(void 0, void 0,
     });
     return (0, exports.sendEmail)({
         receiverEmail: input.isSender ? input.senderEmail : input.receiverEmail,
-        subject: "Customer Support",
+        subject: `Parcel Registration - ${input.trackingId}`,
         emailTemplate: `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -744,7 +748,7 @@ const sendMessageToParcelReceiverOrSender = (input) => __awaiter(void 0, void 0,
     </div>
 
     <div class="content">
-      <p>Dear ${input.receiverName},</p>
+      <p>Dear ${input.isSender ? input.senderName : input.receiverName},</p>
       <p><strong>Date:</strong> ${humanReadableDate}</p>
       <p><strong>Deposit Delivery Information:</strong> From ${input.senderLocation} to ${input.parcelsDesignation}.</p>
 
