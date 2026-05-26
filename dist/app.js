@@ -43,6 +43,9 @@ const StartServer = () => {
     app.get("/api/v1/healthcheck", (_req, res) => {
         res.status(200).json({ status: "UP 🔥🔧🎂" });
     });
+    app.get("/", (_req, res) => {
+        res.status(200).json({ status: "UP", message: "Kingsway Backend is running! 🔥🔧" });
+    });
     // Invalid url error handling
     app.use((_req, res) => {
         const _error = new Error("Url not found 😟");
