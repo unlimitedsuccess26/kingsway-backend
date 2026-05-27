@@ -16,6 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendMessageToParcelReceiverOrSender = exports.sendReachOutEmailToAdmin = exports.sendContactUsEmailToAdmin = exports.sendEmail = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const axios_1 = __importDefault(require("axios"));
 dotenv_1.default.config();
 const smtpSender = process.env.EMAILSENDER;
 const smtpPassword = process.env.EMAILSENDERPASSWORD;
@@ -24,66 +25,31 @@ const clientUrl = process.env.CLIENT_URL;
 const adminEmail = (_a = process.env.ADMIN_EMAIL) !== null && _a !== void 0 ? _a : "";
 dotenv_1.default.config();
 const sendEmail = (input) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!process.env.ZEPTO_API_KEY) {
-        console.error("ZEPTO_API_KEY is missing from environment variables.");
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+        console.error("RESEND_API_KEY is missing from environment variables.");
     }
-    const transport = nodemailer_1.default.createTransport({
-        host: "smtp.zeptomail.com",
-        port: 587,
-        auth: {
-            user: "emailapikey",
-            pass: process.env.ZEPTO_API_KEY || smtpPassword,
-        },
-    });
-    var mailOptions = {
-        from: `"Kingsway Team" <${smtpEmailFrom}>`,
-        to: input.receiverEmail,
-        replyTo: smtpEmailFrom,
-        subject: input.subject,
-        html: input.emailTemplate,
-    };
     try {
-        const info = yield transport.sendMail(mailOptions);
-        console.log("Successfully sent", info.messageId);
-        return info;
+        const response = yield axios_1.default.post("https://api.resend.com/emails", {
+            from: `Kingsway Team <${smtpEmailFrom}>`,
+            to: [input.receiverEmail],
+            subject: input.subject,
+            html: input.emailTemplate,
+        }, {
+            headers: {
+                "Authorization": `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+            }
+        });
+        console.log("Successfully sent via Resend API", response.data);
+        return response.data;
     } catch (error) {
-        console.error("Email sending error:", error);
+        if (error.response) {
+            console.error("Resend API error:", error.response.data);
+        } else {
+            console.error("Email sending error:", error.message);
+        }
     }
-    // try {
-    //   // const transporter = nodemailer.createTransport({
-    //   //   host: 'smtp-relay.sendinblue.com',
-    //   //   port: 587,
-    //   //   secure: false,
-    //   //   auth: {
-    //   //     user: smtpSender,
-    //   //     pass: smtpPassword,
-    //   //   },
-    //   // });
-    //   // const mailOptions = {
-    //   //   from: `Kingsway <${smtpEmailFrom}>`,
-    //   //   to: input.receiverEmail,
-    //   //   subject: input.subject,
-    //   //   html: input.emailTemplate,
-    //   // };
-    //   const transporter = nodemailer.createTransport({
-    //     service: "gmail",
-    //     auth: {
-    //       user: smtpSender,
-    //       pass: smtpPassword,
-    //     },
-    //   });
-    //   const mailOptions = {
-    //     from: `Kingsway <${smtpEmailFrom}>`,
-    //     to: input.receiverEmail,
-    //     subject: input.subject,
-    //     html: input.emailTemplate,
-    //   };
-    //   const info = await transporter.sendMail(mailOptions);
-    //   return info.response;
-    // } catch (error) {
-    //   console.error("Email sending error:", error);
-    //   // throw error;
-    // }
 });
 exports.sendEmail = sendEmail;
 const sendContactUsEmailToAdmin = (input) => __awaiter(void 0, void 0, void 0, function* () {
